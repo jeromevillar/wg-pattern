@@ -5,7 +5,7 @@ const path = require("path");
 const { v4: uuidv4 } = require('uuid');
 const {getLaunchUrl} = require("../utils/launchGame");
 const {loadProto} = require("../utils/proto");
-const {delay, startPing, stopPing, sendMessage, receiveMessage, sendClientLoginReq, sendDivisionActivityReq, sendSpinTreasureMarmosetsStartReq, saveSpin} = require("../utils/common");
+const {delay, startPing, stopPing, sendMessage, receiveMessage, sendClientLoginReq, sendDivisionActivityReq, sendSpinTreasureMarmosetsStartReq, saveSpin, sendSpinTreasureMarmosetsFreeGameEnd} = require("../utils/common");
 
 const PROTO_PATH = path.join(__dirname, "../utils/com_protocol.proto");
 
@@ -101,18 +101,27 @@ exports.loadPattern = async (req, res) => {
                     }
                     case receiveSpinRoute: {
                         let pattern = JSON.parse(JSON.stringify(response));
-                        if (pattern.gameDataInfo.playerGold){
-                            userBalance = pattern.gameDataInfo.playerGold;
-                        } else{
-                            userBalance -= minChip;
+                        if (pattern.gameDataInfo) {
+                            if (pattern.gameDataInfo.playerGold){
+                                userBalance = pattern.gameDataInfo.playerGold;
+                            } else{
+                                userBalance -= minChip;
+                            }
+                            if (pattern.gameDataInfo.mainCard.length > 1) {
+                                await saveSpin(Model, pattern, big, gameCode, minChip, userBalance);
+                                big++;
+                                await delay(100);
+                            }
                         }
-                        await saveSpin(Model, pattern, big, gameCode, minChip, userBalance);
-                        big++;
-                        await delay(200);
                         //totalRound--;
 
-                        if (big <= maxCount) {
+                        if (big <= maxCount || true) {
+                            if (pattern.gameDataInfo.mainCard.length > 1) {
+                                await sendSpinTreasureMarmosetsFreeGameEnd(ws, root, 12014, "com_protocol.TreasureMarmosetsFreeGameEnd", minChip, totalRound);
+                                await delay(200);
+                            }
                             await sendSpinTreasureMarmosetsStartReq(ws, root, sendSpinCmd, sendSpinRoute, minChip, totalRound);
+                            
                             break;
                         }
                     }

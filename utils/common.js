@@ -350,6 +350,12 @@ exports.sendSpinTreasureMarmosetsStartReq = async (ws, root, cmd, route, betAmou
     await this.sendMessage(ws, { cmd: cmd, route: route }, reqData, root);
 }
 
+exports.sendSpinTreasureMarmosetsFreeGameEnd = async (ws, root, cmd, route, betAmount, totalRound)  => {
+    let reqData = {
+    };
+    await this.sendMessage(ws, { cmd: cmd, route: route }, reqData, root);
+}
+
 exports.sendSpinSambaDanceStartReq = async (ws, root, cmd, route, betAmount, totalRound)  => {
     let reqData = {
         "betRateIdx": 0,
@@ -403,6 +409,14 @@ exports.sendSpinSuperAceStartReq = async (ws, root, cmd, route, betAmount, total
         "index": 0,
         "clientBetValue": betAmount,
         "totalRound": totalRound
+    };
+    await this.sendMessage(ws, { cmd: cmd, route: route }, reqData, root);
+}
+
+exports.sendSpinSuperAceGetGameScreenReq = async (ws, root, cmd, route, curSpin, curRound)  => {
+    let reqData = {
+        "curSpin": curSpin,
+        "curRound": curRound
     };
     await this.sendMessage(ws, { cmd: cmd, route: route }, reqData, root);
 }
@@ -468,6 +482,24 @@ exports.saveSpin = async (Model, data, big, gameCode, betAmount, userBalance) =>
         gameDone: 1,
         big,
         small: 1,
+        win: data.gameDataInfo.finishGold ? data.gameDataInfo.finishGold.toFixed(2) : 0,
+        totalWin: data.gameDataInfo.finishGold ? data.gameDataInfo.finishGold.toFixed(2) : 0,
+        totalBet: betAmount.toFixed(2),
+        virtualBet: betAmount.toFixed(2),
+        rtp: data.gameDataInfo.finishGold ? (data.gameDataInfo.finishGold / betAmount * 100).toFixed(2) : 0,
+        balance: userBalance.toFixed(2).toString(),
+        pattern: JSON.stringify(data)
+    });
+}
+
+exports.saveSpin1 = async (Model, data, gameDone, big, small, gameCode, betAmount, userBalance) => {
+    await Model.create({
+        gameCode: gameCode,
+        pType: data.gameDataInfo.finishGold ? 'base-win' : 'base-zero',
+        type: 'spin',
+        gameDone: gameDone,
+        big,
+        small: small,
         win: data.gameDataInfo.finishGold ? data.gameDataInfo.finishGold.toFixed(2) : 0,
         totalWin: data.gameDataInfo.finishGold ? data.gameDataInfo.finishGold.toFixed(2) : 0,
         totalBet: betAmount.toFixed(2),

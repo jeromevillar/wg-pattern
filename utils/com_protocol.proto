@@ -1510,6 +1510,16 @@ message SubtitleBroadcastNotIfyInfo {
 	SuperAceSpin gameDataInfo = 2;
   }
 
+  message SuperAceGetGameScreenReq {
+	uint32 curSpin = 1;
+	uint32 curRound = 2;
+  }
+
+  message SuperAceGetGameScreenRsp {
+	uint32 result = 1;
+	SuperAceSpin gameDataInfo = 2;
+  }
+
   message SuperAceGameInfo {
 	SuperAceSpin gameOpenInfo = 1;
 	uint32 leaveTime = 2;

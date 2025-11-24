@@ -5,7 +5,7 @@ const path = require("path");
 const { v4: uuidv4 } = require('uuid');
 const {getLaunchUrl} = require("../utils/launchGame");
 const {loadProto} = require("../utils/proto");
-const {delay, startPing, stopPing, sendMessage, receiveMessage, sendClientLoginReq, sendDivisionActivityReq, sendSpinSuperAceStartReq, saveSpin} = require("../utils/common");
+const {delay, startPing, stopPing, sendMessage, receiveMessage, sendClientLoginReq, sendDivisionActivityReq, sendSpinSuperAceStartReq, saveSpin1, sendSpinSuperAceGetGameScreenReq} = require("../utils/common");
 
 const PROTO_PATH = path.join(__dirname, "../utils/com_protocol.proto");
 
@@ -16,6 +16,8 @@ const minChip = 0.2;
 let sendSpinCmd = 12011;
 let sendSpinRoute = "com_protocol.SuperAceStartReq";
 let receiveSpinRoute = "com_protocol.SuperAceStartRsp";
+let sendSubSpinRoute = "com_protocol.SuperAceGetGameScreenReq";
+let receiveSubSpinRoute = "com_protocol.SuperAceGetGameScreenRsp";
 
 let account = "";
 let agent = "";
@@ -24,7 +26,7 @@ let token = "";
 let deviceId = uuidv4();
 let root = null;
 let initPattern = null;
-let totalRound = 0;
+let totalRound = 9999;
 let userBalance = 0;
 let maxCount = 10000;
 
@@ -50,6 +52,7 @@ exports.loadPattern = async (req, res) => {
     if (!big) {
         big = 0;
     }
+    let small = 1;
 
     let ws = new WebSocket(`wss://fgahfdvi.cg7.co/gogamesac/?account=${account}&agent=${agent}&time=${time}&token=${token}&gameId=${gameId}`, 
         'Chat-1.0',
@@ -106,14 +109,40 @@ exports.loadPattern = async (req, res) => {
                         } else{
                             userBalance -= minChip;
                         }
-                        await saveSpin(Model, pattern, big, gameCode, minChip, userBalance);
-                        big++;
-                        await delay(200);
-                        //totalRound--;
-
-                        if (big <= maxCount) {
-                            await sendSpinSuperAceStartReq(ws, root, sendSpinCmd, sendSpinRoute, minChip, totalRound);
+                        
+                        const gameDone = pattern.gameDataInfo.curSpin == pattern.gameDataInfo.totalSpin && pattern.gameDataInfo.curRound == pattern.gameDataInfo.totalRound ? 1 : 0;
+                        small = 1;
+                        await saveSpin1(Model, pattern, gameDone, big, small, gameCode, minChip, userBalance);
+                        
+                        if (big <= maxCount || true) {
+                            if (gameDone == 1) {
+                                await sendSpinSuperAceStartReq(ws, root, sendSpinCmd, sendSpinRoute, minChip, totalRound);
+                                big++;
+                            } else {
+                                await sendSpinSuperAceGetGameScreenReq(ws, root, sendSpinCmd, sendSubSpinRoute, 1, 1);
+                            }
                             break;
+                        }
+                    }
+                    case receiveSubSpinRoute: {
+                        small++;
+                        let pattern = JSON.parse(JSON.stringify(response));
+                        if (pattern.gameDataInfo.playerGold){
+                            userBalance = pattern.gameDataInfo.playerGold;
+                        } else{
+                            userBalance -= minChip;
+                        }
+                        const gameDone = pattern.gameDataInfo.curSpin == pattern.gameDataInfo.totalSpin && pattern.gameDataInfo.curRound == pattern.gameDataInfo.totalRound ? 1 : 0;
+                        await saveSpin1(Model, pattern, gameDone, big, small, gameCode, minChip, userBalance);
+                        if (gameDone) {
+                            await sendSpinSuperAceStartReq(ws, root, sendSpinCmd, sendSpinRoute, minChip, totalRound);
+                            big++;
+                        } else {
+                            if (pattern.gameDataInfo.curRound == pattern.gameDataInfo.totalRound) {
+                                await sendSpinSuperAceGetGameScreenReq(ws, root, sendSpinCmd, sendSubSpinRoute, pattern.gameDataInfo.curSpin + 1, 1);
+                            } else {
+                                await sendSpinSuperAceGetGameScreenReq(ws, root, sendSpinCmd, sendSubSpinRoute, pattern.gameDataInfo.curSpin, pattern.gameDataInfo.curRound + 1);
+                            }
                         }
                     }
                 }
