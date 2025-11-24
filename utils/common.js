@@ -492,19 +492,19 @@ exports.saveSpin = async (Model, data, big, gameCode, betAmount, userBalance) =>
     });
 }
 
-exports.saveSpin1 = async (Model, data, gameDone, big, small, gameCode, betAmount, userBalance) => {
+exports.saveSpin1 = async (Model, data, gameDone, big, small, gameCode, betAmount, userBalance, win, pType, type) => {
     await Model.create({
         gameCode: gameCode,
-        pType: data.gameDataInfo.finishGold ? 'base-win' : 'base-zero',
-        type: 'spin',
+        pType: pType,
+        type: type,
         gameDone: gameDone,
         big,
         small: small,
-        win: data.gameDataInfo.finishGold ? data.gameDataInfo.finishGold.toFixed(2) : 0,
+        win: parseFloat(win).toFixed(2),
         totalWin: data.gameDataInfo.finishGold ? data.gameDataInfo.finishGold.toFixed(2) : 0,
         totalBet: betAmount.toFixed(2),
         virtualBet: betAmount.toFixed(2),
-        rtp: data.gameDataInfo.finishGold ? (data.gameDataInfo.finishGold / betAmount * 100).toFixed(2) : 0,
+        rtp: gameDone? (data.gameDataInfo.finishGold ? (data.gameDataInfo.finishGold / betAmount * 100).toFixed(2) : 0) : 0,
         balance: userBalance.toFixed(2).toString(),
         pattern: JSON.stringify(data)
     });

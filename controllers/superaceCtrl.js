@@ -1,5 +1,5 @@
 const db = require('../models');
-const Model = db.wukong;
+const Model = db.superace;
 const WebSocket = require('ws');
 const path = require("path");
 const { v4: uuidv4 } = require('uuid');
@@ -14,6 +14,7 @@ const gameCode = "superace";
 const minChip = 0.2;
 
 let sendSpinCmd = 12011;
+let sendSubSpinCmd = 12019;
 let sendSpinRoute = "com_protocol.SuperAceStartReq";
 let receiveSpinRoute = "com_protocol.SuperAceStartRsp";
 let sendSubSpinRoute = "com_protocol.SuperAceGetGameScreenReq";
@@ -29,6 +30,9 @@ let initPattern = null;
 let totalRound = 9999;
 let userBalance = 0;
 let maxCount = 10000;
+let isFree = false;
+let type = "";
+let pType = "";
 
 exports.loadPattern = async (req, res) => {
     root = await loadProto(PROTO_PATH);
@@ -53,6 +57,7 @@ exports.loadPattern = async (req, res) => {
         big = 0;
     }
     let small = 1;
+    let win = 0;
 
     let ws = new WebSocket(`wss://fgahfdvi.cg7.co/gogamesac/?account=${account}&agent=${agent}&time=${time}&token=${token}&gameId=${gameId}`, 
         'Chat-1.0',
@@ -112,38 +117,65 @@ exports.loadPattern = async (req, res) => {
                         
                         const gameDone = pattern.gameDataInfo.curSpin == pattern.gameDataInfo.totalSpin && pattern.gameDataInfo.curRound == pattern.gameDataInfo.totalRound ? 1 : 0;
                         small = 1;
-                        await saveSpin1(Model, pattern, gameDone, big, small, gameCode, minChip, userBalance);
+                        win = pattern.gameDataInfo.finishGold ? pattern.gameDataInfo.finishGold.toFixed(2) : 0;
+                        if (pattern.gameDataInfo.addFreeCount) {
+                            isFree = true;
+                            pType = "free";
+                            type = "free";
+                        } else {
+                            isFree = false;
+                            pType = pattern.gameDataInfo.finishGold ? 'base-win' : 'base-zero'
+                            type = "spin";
+                        }
+                        await saveSpin1(Model, pattern, gameDone, big, small, gameCode, minChip, userBalance, win, pType, type);
                         
                         if (big <= maxCount || true) {
                             if (gameDone == 1) {
                                 await sendSpinSuperAceStartReq(ws, root, sendSpinCmd, sendSpinRoute, minChip, totalRound);
                                 big++;
                             } else {
-                                await sendSpinSuperAceGetGameScreenReq(ws, root, sendSpinCmd, sendSubSpinRoute, 1, 1);
+                                if (pattern.gameDataInfo.curRound == pattern.gameDataInfo.totalRound) {
+                                    await sendSpinSuperAceGetGameScreenReq(ws, root, sendSubSpinCmd, sendSubSpinRoute, pattern.gameDataInfo.curSpin + 1, 1);
+                                } else {
+                                    await sendSpinSuperAceGetGameScreenReq(ws, root, sendSubSpinCmd, sendSubSpinRoute, pattern.gameDataInfo.curSpin, pattern.gameDataInfo.curRound + 1);
+                                }
                             }
-                            break;
                         }
+                        break;
                     }
                     case receiveSubSpinRoute: {
-                        small++;
                         let pattern = JSON.parse(JSON.stringify(response));
+                        if (!pattern.gameDataInfo){
+                            return;
+                        }
+                        small++;
                         if (pattern.gameDataInfo.playerGold){
                             userBalance = pattern.gameDataInfo.playerGold;
                         } else{
                             userBalance -= minChip;
                         }
+                        win = pattern.gameDataInfo.finishGold ? pattern.gameDataInfo.finishGold.toFixed(2) - win : 0;
                         const gameDone = pattern.gameDataInfo.curSpin == pattern.gameDataInfo.totalSpin && pattern.gameDataInfo.curRound == pattern.gameDataInfo.totalRound ? 1 : 0;
-                        await saveSpin1(Model, pattern, gameDone, big, small, gameCode, minChip, userBalance);
+                        if (isFree) {
+                            pType = "free";
+                            type = "free";
+                        } else {
+                            pType = pattern.gameDataInfo.finishGold ? 'base-win' : 'base-zero';
+                            type = "spin";
+                        }
+                        await saveSpin1(Model, pattern, gameDone, big, small, gameCode, minChip, userBalance, win, pType, type);
+                        win = pattern.gameDataInfo.finishGold ? pattern.gameDataInfo.finishGold.toFixed(2) : 0;
                         if (gameDone) {
                             await sendSpinSuperAceStartReq(ws, root, sendSpinCmd, sendSpinRoute, minChip, totalRound);
                             big++;
                         } else {
                             if (pattern.gameDataInfo.curRound == pattern.gameDataInfo.totalRound) {
-                                await sendSpinSuperAceGetGameScreenReq(ws, root, sendSpinCmd, sendSubSpinRoute, pattern.gameDataInfo.curSpin + 1, 1);
+                                await sendSpinSuperAceGetGameScreenReq(ws, root, sendSubSpinCmd, sendSubSpinRoute, pattern.gameDataInfo.curSpin + 1, 1);
                             } else {
-                                await sendSpinSuperAceGetGameScreenReq(ws, root, sendSpinCmd, sendSubSpinRoute, pattern.gameDataInfo.curSpin, pattern.gameDataInfo.curRound + 1);
+                                await sendSpinSuperAceGetGameScreenReq(ws, root, sendSubSpinCmd, sendSubSpinRoute, pattern.gameDataInfo.curSpin, pattern.gameDataInfo.curRound + 1);
                             }
                         }
+                        break;
                     }
                 }
             }
