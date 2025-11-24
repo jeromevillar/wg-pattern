@@ -1,0 +1,1285 @@
+[
+    {
+        "e": {
+            "cmd": 12011,
+            "route": "com_protocol.FortuneToucanStartReq"
+        },
+        "t": {
+            "index": 2,
+            "betRateIdx": 4,
+            "totalRound": 0,
+            "currRound": 0,
+            "clientBetValue": 2.5
+        }
+    },
+    {
+        "gameDataInfo": {
+            "playerGold": 100000,
+            "finishGold": 1.5,
+            "allOld": 0.6,
+            "areaBet": {
+                "index": 2,
+                "betRateIdx": 4,
+                "clientBetValue": 2.5
+            },
+            "recordId": "API003-331T0017-152294236-83",
+            "mainCard": [
+                {
+                    "card1": [
+                        1,
+                        1,
+                        13
+                    ],
+                    "card2": [
+                        21,
+                        21,
+                        21
+                    ],
+                    "card3": [
+                        3,
+                        13,
+                        13
+                    ],
+                    "linInfo": [
+                        {
+                            "linId": 3,
+                            "linArr": [
+                                2,
+                                2,
+                                2
+                            ],
+                            "cardId": 13,
+                            "rollGold": 1.5
+                        }
+                    ],
+                    "indexs": [
+                        76,
+                        84,
+                        37
+                    ]
+                }
+            ],
+            "winMultipleArr": [
+                0,
+                35,
+                50
+            ],
+            "cardId": "3031_A_1.3"
+        }
+    },
+    {
+        "e": {
+            "cmd": 12011,
+            "route": "com_protocol.FortuneToucanStartReq"
+        },
+        "t": {
+            "index": 2,
+            "betRateIdx": 4,
+            "totalRound": 30,
+            "currRound": 30,
+            "clientBetValue": 2.5
+        }
+    },
+    {
+        "gameDataInfo": {
+            "areaBet": {
+                "index": 2,
+                "betRateIdx": 4,
+                "totalRound": 30,
+                "currRound": true,
+                "clientBetValue": 2.5
+            },
+            "recordId": "API003-331T0017-152294240-84",
+            "mainCard": [
+                {
+                    "card1": [
+                        1,
+                        1,
+                        11
+                    ],
+                    "card2": [
+                        21,
+                        21,
+                        21
+                    ],
+                    "card3": [
+                        2,
+                        2,
+                        2
+                    ],
+                    "indexs": [
+                        58,
+                        84,
+                        15
+                    ]
+                }
+            ],
+            "winMultipleArr": [
+                0,
+                35,
+                50
+            ],
+            "cardId": "3031_A_1.3"
+        }
+    },
+    {
+        "e": {
+            "cmd": 12011,
+            "route": "com_protocol.FortuneToucanStartReq"
+        },
+        "t": {
+            "index": 2,
+            "betRateIdx": 4,
+            "totalRound": 29,
+            "currRound": 29,
+            "clientBetValue": 2.5
+        }
+    },
+    {
+        "gameDataInfo": {
+            "areaBet": {
+                "index": 2,
+                "betRateIdx": 4,
+                "totalRound": 29,
+                "currRound": true,
+                "clientBetValue": 2.5
+            },
+            "recordId": "API003-331T0017-152294243-85",
+            "mainCard": [
+                {
+                    "card1": [
+                        1,
+                        1,
+                        12
+                    ],
+                    "card2": [
+                        3,
+                        13,
+                        13
+                    ],
+                    "card3": [
+                        13,
+                        3,
+                        12
+                    ],
+                    "indexs": [
+                        84,
+                        51,
+                        47
+                    ]
+                }
+            ],
+            "winMultipleArr": [
+                0,
+                35,
+                50
+            ],
+            "cardId": "3031_A_1.3"
+        }
+    },
+    {
+        "e": {
+            "cmd": 12011,
+            "route": "com_protocol.FortuneToucanStartReq"
+        },
+        "t": {
+            "index": 2,
+            "betRateIdx": 4,
+            "totalRound": 28,
+            "currRound": 28,
+            "clientBetValue": 2.5
+        }
+    },
+    {
+        "gameDataInfo": {
+            "playerGold": 100042.5,
+            "finishGold": 50,
+            "allOld": 20,
+            "areaBet": {
+                "index": 2,
+                "betRateIdx": 4,
+                "totalRound": 28,
+                "currRound": true,
+                "clientBetValue": 2.5
+            },
+            "recordId": "API003-331T0017-152294244-86",
+            "mainCard": [
+                {
+                    "card1": [
+                        1,
+                        11,
+                        11
+                    ],
+                    "card2": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "card3": [
+                        21,
+                        11,
+                        11
+                    ],
+                    "linInfo": [
+                        {
+                            "linId": 2,
+                            "linArr": [
+                                0,
+                                0,
+                                0
+                            ],
+                            "cardId": 1,
+                            "rollGold": 50
+                        }
+                    ],
+                    "indexs": [
+                        24,
+                        75,
+                        42
+                    ]
+                }
+            ],
+            "winMultipleArr": [
+                0,
+                35,
+                50
+            ],
+            "cardId": "3031_A_1.3"
+        }
+    },
+    {
+        "e": {
+            "cmd": 12011,
+            "route": "com_protocol.FortuneToucanStartReq"
+        },
+        "t": {
+            "index": 2,
+            "betRateIdx": 4,
+            "totalRound": 27,
+            "currRound": 27,
+            "clientBetValue": 2.5
+        }
+    },
+    {
+        "gameDataInfo": {
+            "areaBet": {
+                "index": 2,
+                "betRateIdx": 4,
+                "totalRound": 27,
+                "currRound": true,
+                "clientBetValue": 2.5
+            },
+            "recordId": "API003-331T0017-152294260-87",
+            "mainCard": [
+                {
+                    "card1": [
+                        21,
+                        13,
+                        13
+                    ],
+                    "card2": [
+                        13,
+                        3,
+                        1
+                    ],
+                    "card3": [
+                        12,
+                        12,
+                        2
+                    ],
+                    "indexs": [
+                        19,
+                        64,
+                        72
+                    ]
+                }
+            ],
+            "winMultipleArr": [
+                0,
+                35,
+                50
+            ],
+            "cardId": "3031_A_1.3"
+        }
+    },
+    {
+        "e": {
+            "cmd": 12011,
+            "route": "com_protocol.FortuneToucanStartReq"
+        },
+        "t": {
+            "index": 2,
+            "betRateIdx": 4,
+            "totalRound": 26,
+            "currRound": 26,
+            "clientBetValue": 2.5
+        }
+    },
+    {
+        "gameDataInfo": {
+            "areaBet": {
+                "index": 2,
+                "betRateIdx": 4,
+                "totalRound": 26,
+                "currRound": true,
+                "clientBetValue": 2.5
+            },
+            "recordId": "API003-331T0017-152294261-88",
+            "mainCard": [
+                {
+                    "card1": [
+                        3,
+                        12,
+                        1
+                    ],
+                    "card2": [
+                        11,
+                        13,
+                        1
+                    ],
+                    "card3": [
+                        12,
+                        2,
+                        11
+                    ],
+                    "indexs": [
+                        1,
+                        73,
+                        50
+                    ]
+                }
+            ],
+            "winMultipleArr": [
+                0,
+                35,
+                50
+            ],
+            "cardId": "3031_A_1.3"
+        }
+    },
+    {
+        "e": {
+            "cmd": 12011,
+            "route": "com_protocol.FortuneToucanStartReq"
+        },
+        "t": {
+            "index": 2,
+            "betRateIdx": 4,
+            "totalRound": 25,
+            "currRound": 25,
+            "clientBetValue": 2.5
+        }
+    },
+    {
+        "gameDataInfo": {
+            "areaBet": {
+                "index": 2,
+                "betRateIdx": 4,
+                "totalRound": 25,
+                "currRound": true,
+                "clientBetValue": 2.5
+            },
+            "recordId": "API003-331T0017-152294262-89",
+            "mainCard": [
+                {
+                    "card1": [
+                        12,
+                        13,
+                        13
+                    ],
+                    "card2": [
+                        2,
+                        11,
+                        3
+                    ],
+                    "card3": [
+                        13,
+                        3,
+                        3
+                    ],
+                    "indexs": [
+                        67,
+                        31,
+                        2
+                    ]
+                }
+            ],
+            "winMultipleArr": [
+                0,
+                35,
+                50
+            ],
+            "cardId": "3031_A_1.3"
+        }
+    },
+    {
+        "e": {
+            "cmd": 12011,
+            "route": "com_protocol.FortuneToucanStartReq"
+        },
+        "t": {
+            "index": 2,
+            "betRateIdx": 4,
+            "totalRound": 24,
+            "currRound": 24,
+            "clientBetValue": 2.5
+        }
+    },
+    {
+        "gameDataInfo": {
+            "areaBet": {
+                "index": 2,
+                "betRateIdx": 4,
+                "totalRound": 24,
+                "currRound": true,
+                "clientBetValue": 2.5
+            },
+            "recordId": "API003-331T0017-152294263-90",
+            "mainCard": [
+                {
+                    "card1": [
+                        11,
+                        11,
+                        1
+                    ],
+                    "card2": [
+                        12,
+                        12,
+                        1
+                    ],
+                    "card3": [
+                        11,
+                        2,
+                        12
+                    ],
+                    "indexs": [
+                        70,
+                        91,
+                        33
+                    ]
+                }
+            ],
+            "winMultipleArr": [
+                0,
+                35,
+                50
+            ],
+            "cardId": "3031_A_1.3"
+        }
+    },
+    {
+        "e": {
+            "cmd": 12011,
+            "route": "com_protocol.FortuneToucanStartReq"
+        },
+        "t": {
+            "index": 2,
+            "betRateIdx": 4,
+            "totalRound": 23,
+            "currRound": 23,
+            "clientBetValue": 2.5
+        }
+    },
+    {
+        "gameDataInfo": {
+            "areaBet": {
+                "index": 2,
+                "betRateIdx": 4,
+                "totalRound": 23,
+                "currRound": true,
+                "clientBetValue": 2.5
+            },
+            "recordId": "API003-331T0017-152294264-91",
+            "mainCard": [
+                {
+                    "card1": [
+                        3,
+                        1,
+                        1
+                    ],
+                    "card2": [
+                        11,
+                        12,
+                        2
+                    ],
+                    "card3": [
+                        12,
+                        12,
+                        12
+                    ],
+                    "indexs": [
+                        35,
+                        97,
+                        22
+                    ]
+                }
+            ],
+            "winMultipleArr": [
+                0,
+                35,
+                50
+            ],
+            "cardId": "3031_A_1.3"
+        }
+    },
+    {
+        "e": {
+            "cmd": 12011,
+            "route": "com_protocol.FortuneToucanStartReq"
+        },
+        "t": {
+            "index": 2,
+            "betRateIdx": 4,
+            "totalRound": 22,
+            "currRound": 22,
+            "clientBetValue": 2.5
+        }
+    },
+    {
+        "gameDataInfo": {
+            "areaBet": {
+                "index": 2,
+                "betRateIdx": 4,
+                "totalRound": 22,
+                "currRound": true,
+                "clientBetValue": 2.5
+            },
+            "recordId": "API003-331T0017-152294265-92",
+            "mainCard": [
+                {
+                    "card1": [
+                        13,
+                        1,
+                        1
+                    ],
+                    "card2": [
+                        13,
+                        13,
+                        3
+                    ],
+                    "card3": [
+                        12,
+                        12,
+                        2
+                    ],
+                    "indexs": [
+                        51,
+                        12,
+                        108
+                    ]
+                }
+            ],
+            "winMultipleArr": [
+                0,
+                35,
+                50
+            ],
+            "cardId": "3031_A_1.3"
+        }
+    },
+    {
+        "e": {
+            "cmd": 12011,
+            "route": "com_protocol.FortuneToucanStartReq"
+        },
+        "t": {
+            "index": 2,
+            "betRateIdx": 4,
+            "totalRound": 21,
+            "currRound": 21,
+            "clientBetValue": 2.5
+        }
+    },
+    {
+        "gameDataInfo": {
+            "playerGold": 100028,
+            "finishGold": 3,
+            "allOld": 1.2,
+            "areaBet": {
+                "index": 2,
+                "betRateIdx": 4,
+                "totalRound": 21,
+                "currRound": true,
+                "clientBetValue": 2.5
+            },
+            "recordId": "API003-331T0017-152294266-93",
+            "mainCard": [
+                {
+                    "card1": [
+                        11,
+                        13,
+                        13
+                    ],
+                    "card2": [
+                        12,
+                        21,
+                        21
+                    ],
+                    "card3": [
+                        13,
+                        13,
+                        3
+                    ],
+                    "linInfo": [
+                        {
+                            "linId": 1,
+                            "linArr": [
+                                1,
+                                1,
+                                1
+                            ],
+                            "cardId": 13,
+                            "rollGold": 1.5
+                        },
+                        {
+                            "linId": 5,
+                            "linArr": [
+                                2,
+                                1,
+                                0
+                            ],
+                            "cardId": 13,
+                            "rollGold": 1.5
+                        }
+                    ],
+                    "indexs": [
+                        61,
+                        109,
+                        46
+                    ]
+                }
+            ],
+            "winMultipleArr": [
+                0,
+                35,
+                50
+            ],
+            "cardId": "3031_A_1.3"
+        }
+    },
+    {
+        "e": {
+            "cmd": 12011,
+            "route": "com_protocol.FortuneToucanStartReq"
+        },
+        "t": {
+            "index": 2,
+            "betRateIdx": 4,
+            "totalRound": 20,
+            "currRound": 20,
+            "clientBetValue": 2.5
+        }
+    },
+    {
+        "gameDataInfo": {
+            "playerGold": 100045.5,
+            "finishGold": 20,
+            "allOld": 8,
+            "areaBet": {
+                "index": 2,
+                "betRateIdx": 4,
+                "totalRound": 20,
+                "currRound": true,
+                "clientBetValue": 2.5
+            },
+            "recordId": "API003-331T0017-152294269-94",
+            "isTing": 1,
+            "mainCard": [
+                {
+                    "card1": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "card2": [
+                        0,
+                        3,
+                        3
+                    ],
+                    "card3": [
+                        3,
+                        0,
+                        0
+                    ],
+                    "indexs": [
+                        1,
+                        7,
+                        14
+                    ]
+                },
+                {
+                    "card1": [
+                        21,
+                        0,
+                        0
+                    ],
+                    "card2": [
+                        3,
+                        3,
+                        3
+                    ],
+                    "card3": [
+                        3,
+                        0,
+                        0
+                    ],
+                    "indexs": [
+                        5,
+                        14,
+                        0
+                    ]
+                },
+                {
+                    "card1": [
+                        21,
+                        0,
+                        21
+                    ],
+                    "card2": [
+                        3,
+                        3,
+                        3
+                    ],
+                    "card3": [
+                        3,
+                        3,
+                        0
+                    ],
+                    "indexs": [
+                        9,
+                        7,
+                        18
+                    ]
+                },
+                {
+                    "card1": [
+                        21,
+                        0,
+                        21
+                    ],
+                    "card2": [
+                        3,
+                        3,
+                        3
+                    ],
+                    "card3": [
+                        3,
+                        3,
+                        3
+                    ],
+                    "indexs": [
+                        5,
+                        14,
+                        12
+                    ]
+                },
+                {
+                    "card1": [
+                        21,
+                        0,
+                        21
+                    ],
+                    "card2": [
+                        3,
+                        3,
+                        3
+                    ],
+                    "card3": [
+                        3,
+                        3,
+                        3
+                    ],
+                    "linInfo": [
+                        {
+                            "linId": 2,
+                            "linArr": [
+                                0,
+                                0,
+                                0
+                            ],
+                            "cardId": 3,
+                            "rollGold": 5
+                        },
+                        {
+                            "linId": 3,
+                            "linArr": [
+                                2,
+                                2,
+                                2
+                            ],
+                            "cardId": 3,
+                            "rollGold": 5
+                        },
+                        {
+                            "linId": 4,
+                            "linArr": [
+                                0,
+                                1,
+                                2
+                            ],
+                            "cardId": 3,
+                            "rollGold": 5
+                        },
+                        {
+                            "linId": 5,
+                            "linArr": [
+                                2,
+                                1,
+                                0
+                            ],
+                            "cardId": 3,
+                            "rollGold": 5
+                        }
+                    ],
+                    "indexs": [
+                        17,
+                        1,
+                        3
+                    ]
+                }
+            ],
+            "synbol": 3,
+            "winMultipleArr": [
+                0,
+                35,
+                50
+            ],
+            "cardId": "3031_A_1.3"
+        }
+    },
+    {
+        "e": {
+            "cmd": 12011,
+            "route": "com_protocol.FortuneToucanStartReq"
+        },
+        "t": {
+            "index": 2,
+            "betRateIdx": 4,
+            "totalRound": 10,
+            "currRound": 10,
+            "clientBetValue": 2.5
+        }
+    },
+    {
+        "gameDataInfo": {
+            "areaBet": {
+                "index": 2,
+                "betRateIdx": 4,
+                "totalRound": 10,
+                "currRound": true,
+                "clientBetValue": 2.5
+            },
+            "recordId": "API003-331T0017-152294292-95",
+            "mainCard": [
+                {
+                    "card1": [
+                        13,
+                        1,
+                        1
+                    ],
+                    "card2": [
+                        1,
+                        1,
+                        12
+                    ],
+                    "card3": [
+                        11,
+                        11,
+                        3
+                    ],
+                    "indexs": [
+                        91,
+                        40,
+                        52
+                    ]
+                }
+            ],
+            "winMultipleArr": [
+                0,
+                35,
+                50
+            ],
+            "cardId": "3031_A_1.3"
+        }
+    },
+    {
+        "e": {
+            "cmd": 12011,
+            "route": "com_protocol.FortuneToucanStartReq"
+        },
+        "t": {
+            "index": 2,
+            "betRateIdx": 4,
+            "totalRound": 9,
+            "currRound": 9,
+            "clientBetValue": 2.5
+        }
+    },
+    {
+        "gameDataInfo": {
+            "areaBet": {
+                "index": 2,
+                "betRateIdx": 4,
+                "totalRound": 9,
+                "currRound": true,
+                "clientBetValue": 2.5
+            },
+            "recordId": "API003-331T0017-152294293-96",
+            "mainCard": [
+                {
+                    "card1": [
+                        1,
+                        11,
+                        11
+                    ],
+                    "card2": [
+                        3,
+                        13,
+                        1
+                    ],
+                    "card3": [
+                        11,
+                        11,
+                        1
+                    ],
+                    "indexs": [
+                        81,
+                        43,
+                        18
+                    ]
+                }
+            ],
+            "winMultipleArr": [
+                0,
+                35,
+                50
+            ],
+            "cardId": "3031_A_1.3"
+        }
+    },
+    {
+        "e": {
+            "cmd": 12011,
+            "route": "com_protocol.FortuneToucanStartReq"
+        },
+        "t": {
+            "index": 2,
+            "betRateIdx": 4,
+            "totalRound": 8,
+            "currRound": 8,
+            "clientBetValue": 2.5
+        }
+    },
+    {
+        "gameDataInfo": {
+            "areaBet": {
+                "index": 2,
+                "betRateIdx": 4,
+                "totalRound": 8,
+                "currRound": true,
+                "clientBetValue": 2.5
+            },
+            "recordId": "API003-331T0017-152294294-97",
+            "mainCard": [
+                {
+                    "card1": [
+                        13,
+                        13,
+                        11
+                    ],
+                    "card2": [
+                        1,
+                        21,
+                        11
+                    ],
+                    "card3": [
+                        13,
+                        3,
+                        1
+                    ],
+                    "indexs": [
+                        68,
+                        95,
+                        29
+                    ]
+                }
+            ],
+            "winMultipleArr": [
+                0,
+                35,
+                50
+            ],
+            "cardId": "3031_A_1.3"
+        }
+    },
+    {
+        "e": {
+            "cmd": 12011,
+            "route": "com_protocol.FortuneToucanStartReq"
+        },
+        "t": {
+            "index": 2,
+            "betRateIdx": 4,
+            "totalRound": 7,
+            "currRound": 7,
+            "clientBetValue": 2.5
+        }
+    },
+    {
+        "gameDataInfo": {
+            "areaBet": {
+                "index": 2,
+                "betRateIdx": 4,
+                "totalRound": 7,
+                "currRound": true,
+                "clientBetValue": 2.5
+            },
+            "recordId": "API003-331T0017-152294296-98",
+            "mainCard": [
+                {
+                    "card1": [
+                        1,
+                        11,
+                        11
+                    ],
+                    "card2": [
+                        3,
+                        12,
+                        12
+                    ],
+                    "card3": [
+                        2,
+                        11,
+                        11
+                    ],
+                    "indexs": [
+                        43,
+                        16,
+                        57
+                    ]
+                }
+            ],
+            "winMultipleArr": [
+                0,
+                35,
+                50
+            ],
+            "cardId": "3031_A_1.3"
+        }
+    },
+    {
+        "e": {
+            "cmd": 12011,
+            "route": "com_protocol.FortuneToucanStartReq"
+        },
+        "t": {
+            "index": 2,
+            "betRateIdx": 4,
+            "totalRound": 6,
+            "currRound": 6,
+            "clientBetValue": 2.5
+        }
+    },
+    {
+        "gameDataInfo": {
+            "playerGold": 100034.5,
+            "finishGold": 1.5,
+            "allOld": 0.6,
+            "areaBet": {
+                "index": 2,
+                "betRateIdx": 4,
+                "totalRound": 6,
+                "currRound": true,
+                "clientBetValue": 2.5
+            },
+            "recordId": "API003-331T0017-152294297-99",
+            "mainCard": [
+                {
+                    "card1": [
+                        1,
+                        13,
+                        13
+                    ],
+                    "card2": [
+                        12,
+                        21,
+                        21
+                    ],
+                    "card3": [
+                        11,
+                        2,
+                        13
+                    ],
+                    "linInfo": [
+                        {
+                            "linId": 3,
+                            "linArr": [
+                                2,
+                                2,
+                                2
+                            ],
+                            "cardId": 13,
+                            "rollGold": 1.5
+                        }
+                    ],
+                    "indexs": [
+                        77,
+                        109,
+                        65
+                    ]
+                }
+            ],
+            "winMultipleArr": [
+                0,
+                35,
+                50
+            ],
+            "cardId": "3031_A_1.3"
+        }
+    },
+    {
+        "e": {
+            "cmd": 12011,
+            "route": "com_protocol.FortuneToucanStartReq"
+        },
+        "t": {
+            "index": 2,
+            "betRateIdx": 4,
+            "totalRound": 5,
+            "currRound": 5,
+            "clientBetValue": 2.5
+        }
+    },
+    {
+        "gameDataInfo": {
+            "areaBet": {
+                "index": 2,
+                "betRateIdx": 4,
+                "totalRound": 5,
+                "currRound": true,
+                "clientBetValue": 2.5
+            },
+            "recordId": "API003-331T0017-152294299-100",
+            "mainCard": [
+                {
+                    "card1": [
+                        12,
+                        12,
+                        13
+                    ],
+                    "card2": [
+                        12,
+                        3,
+                        13
+                    ],
+                    "card3": [
+                        11,
+                        1,
+                        1
+                    ],
+                    "indexs": [
+                        48,
+                        34,
+                        19
+                    ]
+                }
+            ],
+            "winMultipleArr": [
+                0,
+                35,
+                50
+            ],
+            "cardId": "3031_A_1.3"
+        }
+    },
+    {
+        "e": {
+            "cmd": 12011,
+            "route": "com_protocol.FortuneToucanStartReq"
+        },
+        "t": {
+            "index": 2,
+            "betRateIdx": 4,
+            "totalRound": 4,
+            "currRound": 4,
+            "clientBetValue": 2.5
+        }
+    },
+    {
+        "gameDataInfo": {
+            "playerGold": 100039,
+            "finishGold": 9.5,
+            "allOld": 3.8,
+            "areaBet": {
+                "index": 2,
+                "betRateIdx": 4,
+                "totalRound": 4,
+                "currRound": true,
+                "clientBetValue": 2.5
+            },
+            "recordId": "API003-331T0017-152294300-101",
+            "mainCard": [
+                {
+                    "card1": [
+                        11,
+                        11,
+                        13
+                    ],
+                    "card2": [
+                        21,
+                        21,
+                        2
+                    ],
+                    "card3": [
+                        21,
+                        21,
+                        1
+                    ],
+                    "linInfo": [
+                        {
+                            "linId": 1,
+                            "linArr": [
+                                1,
+                                1,
+                                1
+                            ],
+                            "cardId": 11,
+                            "rollGold": 4
+                        },
+                        {
+                            "linId": 2,
+                            "linArr": [
+                                0,
+                                0,
+                                0
+                            ],
+                            "cardId": 11,
+                            "rollGold": 4
+                        },
+                        {
+                            "linId": 5,
+                            "linArr": [
+                                2,
+                                1,
+                                0
+                            ],
+                            "cardId": 13,
+                            "rollGold": 1.5
+                        }
+                    ],
+                    "indexs": [
+                        60,
+                        1,
+                        8
+                    ]
+                }
+            ],
+            "winMultipleArr": [
+                0,
+                35,
+                50
+            ],
+            "cardId": "3031_A_1.3"
+        }
+    }
+]

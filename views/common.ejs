@@ -1,0 +1,93 @@
+<p>This is GG page</p>
+<script src="/axios.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/protobufjs/7.4.0/protobuf.js" integrity="sha512-uH+Om4r3GFQS6aLAlwdM6MSGXMymJdDlW9mW6WztlTjuoD7K4yi5sLEufcqqNImN/kDFJkIu+cNYQ0hXnMZz5g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    const socket = new WebSocket('wss://hunter01.ppro.98078.net:999/');
+    const loginData = '<%= loginData %>';
+    let heartId = 0;
+    let keepTimer = null;
+
+    function base64ToByteArray(base64) {
+        // Decode Base64 to binary string
+        const binaryString = atob(base64);
+        const len = binaryString.length;
+        const bytes = new Uint8Array(len);
+
+        // Convert binary string to byte array
+        for (let i = 0; i < len; i++) {
+            bytes[i] = binaryString.charCodeAt(i);
+        }
+
+        return bytes;
+    }
+
+    const sendScreenReportReq = async () => {
+        const root = await protobuf.load('../msg_report.proto');
+        const Req = root.lookupType('report.screen_report_req');
+
+        const message = Req.create({
+            "screen": 1
+        });
+        const reqData = Req.encode(message).finish();
+        socket.send(reqData);
+    }
+
+    const sendRotateCanvasReq = async () => {
+        const root = await protobuf.load('../msg_report.proto');
+        const Req = root.lookupType('report.rotate_canvas_req');
+
+        const message = Req.create({
+            "mark": 0
+        });
+        const reqData = Req.encode(message).finish();
+        socket.send(reqData);
+    }
+
+    const sendLoginData = () => {
+        let data = base64ToByteArray(loginData);
+        socket.send(data);
+    }
+
+    const keepAlive = async () => {
+        const root = await protobuf.load('../msg_base.proto');
+        const heartBeatReq = root.lookupType('base.heartbeat_req');
+
+        keepTimer = setInterval(() => {
+            if (socket.readyState === WebSocket.CLOSED) {
+                clearInterval(keepTimer);
+                keepTimer = null;
+                return;
+            }
+            const message = heartBeatReq.create({
+                "id": heartId
+            });
+            const reqData = heartBeatReq.encode(message).finish();
+            console.log('send-keep-alive:', reqData);
+            socket.send(reqData);
+            heartId ++;
+        }, 1000);
+    }
+
+
+    socket.onopen = async () => {
+        console.log('WebSocket connection established');
+
+        await sendScreenReportReq();
+        await sendRotateCanvasReq();
+        await sendLoginData();
+        await keepAlive();
+    };
+
+    socket.onmessage = (event) => {
+
+    };
+
+    socket.onclose = () => {
+        console.log('WebSocket connection closed');
+    };
+
+    socket.onerror = (error) => {
+        console.error('WebSocket Error:', error);
+    };
+</script>

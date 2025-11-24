@@ -1,0 +1,38 @@
+syntax = "proto2";
+
+package base;
+
+import "msg_common.proto";
+
+enum c_cmd {
+    heartbeat_req = 0;
+    heartbeat_resp = 1;
+    pop_up_msg_resp = 2;
+    pop_up_msg_push = 3;
+}
+
+message Empty {}
+
+service msg_base_service {
+    rpc heartbeat (heartbeat_req) returns (heartbeat_resp);
+    rpc pop_up_msg (Empty) returns (pop_up_msg_resp);
+    rpc pop_up (Empty) returns (pop_up_msg_push);
+}
+
+// 心跳
+message heartbeat_req {
+    required uint64 id = 1;
+}
+message heartbeat_resp {
+    required uint64 id = 1;
+}
+
+// 弹窗消息
+message pop_up_msg_resp {
+    required dmsg msg = 1; // Ensure dmsg is defined in msg_common.proto
+}
+
+// 弹窗消息
+message pop_up_msg_push {
+    required string msg = 1;
+}

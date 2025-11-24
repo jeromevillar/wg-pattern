@@ -1,0 +1,262 @@
+syntax = "proto3";
+
+package competition;
+
+// 钱包相关
+import "msg_common.proto";
+
+enum c_cmd {
+    default = 0;
+    sign_up_req = 1;
+    sign_up_resp = 2; // 报名
+    overview_req = 3; // 获取赛事信息
+    overview_resp = 4;
+    winner_list_req = 5;  // 中奖名单+自己的
+    winner_list_resp = 6;
+    week_rank_req = 7;  // 周榜单
+    week_rank_resp = 8;
+    notice_push = 9;
+    competition_time_info_req =10;
+    competition_time_info_resp =11;
+    give_up_req = 12;
+    give_up_resp = 13;
+}
+
+enum msg_competition_type{
+    DEFAULT = 0;
+    POINT_RACE = 1; // 積分賽
+    MELEE_RACE = 2; // 亂鬥賽
+}
+
+enum msg_code_type{
+    OK = 0;
+    SAME_IP = 1; // 同IP
+    LACE_DAMA = 2; // 打碼不夠
+    NOT_OPEN = 3; // 未開放
+    FULL = 4; // 滿員
+    CHIPS_NOT_IN_RANGE = 5; //  金額不合法
+    ALREADY_SIGN_UP = 6;
+    ALREADY_START = 7;  // 比賽已開始
+}
+
+enum msg_notice_type{
+    EVENT_PROMOTION_RESULT = 0;  // 晉級結果
+    EVENT_RESULT = 1;  // 賽事結果
+    EVENT_SCHEDULE = 2; // 赛程通知
+    EVENT_UPDATE_RANK = 3; // 实时排名
+    EVENT_SWITCH_ROOM = 4; // 切換房間
+    EVENT_READY_ROOM = 5; // 房間準備好
+    EVENT_REENTER_ROOM = 6; // 有未完成的比赛
+    EVENT_MARQUEE = 7; // 跑马灯
+}
+
+enum event_status_type{
+    CLOSE = 0;  //结束
+    OPEN = 1; // 开启中
+    READY = 2; // 待开启
+    CANCEL = 3; // 取消
+}
+
+enum bullet_type{
+    DEFAULT = 0;
+    FREE = 1;  // 免费
+    PAY = 2;  //付费
+}
+
+message  range{
+    int64 min = 1; // -1 无限制
+    int64 max = 2; // -1 无限制
+}
+
+message event_promotion_result{
+    bool promotion = 1; // 是否晋级
+    optional uint64 score = 2; // 获得积分
+    optional uint32 rank = 3; // 排名
+    optional uint32 next_time = 4; // 下輪開賽時間
+    optional uint32 lucky_chips = 5; // 幸运奖金
+    optional uint32 promotion_rank = 6; // 晋级最低排名
+}
+
+message event_result{
+    optional uint64 score = 1; // 获得积分
+    optional uint32 rank = 2; // 排名
+    optional uint32 min_rank = 3; // 最低排名
+    optional uint32 lucky_chips = 4; // 幸运奖金
+    optional uint32 rank_chips = 5; // 排名奖金
+}
+
+
+message event_schedule{
+    event_status_type status = 1; // 状态
+    optional uint32 start_time = 2; //
+    optional uint32 round_end_time = 3; //
+    optional uint32 game_id = 4; //
+    optional uint32 room_type = 5; //
+    optional bullet_type bullet_type = 6; //
+    optional msg_competition_type type = 7; //
+    optional string game_url = 8; //
+    optional uint32 uuid = 9; //   活動唯一ID
+}
+
+message event_update_rank{
+    uint32 rank = 1; // 排名
+    uint32 score = 2; // 积分
+}
+
+message event_room_ready{
+    optional uint32 room_type = 1; //
+    optional bullet_type bullet_type = 2; //
+    optional msg_competition_type type = 3; //
+}
+
+
+message event_marquee{
+    uint32 room_type = 1; //
+    bullet_type bullet_type = 2; //
+    msg_competition_type type = 3; //
+    uint32 game_id = 4; //
+    uint32 time = 5; //
+}
+
+
+// 赛事信息
+message event_info{
+    uint32  game_id = 1;
+    uint32  room_type = 2;  // 倍场
+    uint32  role_num = 3;  // 玩家人数
+    uint32  full_role_num = 4; // 满员人数
+    string  url = 5;     // 跳转 url
+    uint32  start_time = 6; // 开赛时间
+    uint32  end_time = 7; // 结束时间
+    repeated award_detail award_detail = 8;// 奖励描述
+    uint32  lucky_min_chips = 9; // 幸运随机最小奖励
+    uint32  lucky_max_chips = 10; // 幸运随机最大奖励
+    bullet_type  bullet_type = 11; //
+    range sign_up_limit = 12;  // 报名限制
+    bool is_sign_up = 13;  // 是否报名
+    optional uint32 round_start_time = 14;  // 最近轮开始时间
+    optional uint32 round_end_time = 15;  // 最近结束开始时间
+}
+
+message award_detail{
+    uint32  rank_min = 1;  // 排名奖励
+    uint32  rank_max = 2;  // 排名奖励
+    uint32  chips = 3;  // 排名奖励
+}
+
+service msg_competition_service {
+    rpc sign_up (sign_up_req) returns (sign_up_resp); //報名
+    rpc overview (overview_req) returns (overview_resp); //概覽
+    rpc winner_list(winner_list_req) returns (winner_list_resp); // 中奖名单
+    rpc week_rank(week_rank_req) returns (week_rank_resp); // 周榜
+    rpc notice (undefined) returns (notice_push); //通知
+    rpc competition_time_info (competition_time_info_req) returns (competition_time_info_resp); //比赛时间信息
+    rpc give_up (give_up_req) returns (give_up_resp); // 放弃
+}
+
+message  sign_up_req{
+    uint32 game_id = 1;    //
+    uint32 room_type = 2;  // 倍场
+    bullet_type bullet_type = 3;  // 付费类型
+    msg_competition_type type = 4;
+}
+
+//報名
+message sign_up_resp{
+    msg_code_type code = 1;
+}
+
+message overview_req{
+    msg_competition_type type = 1;
+}
+
+message overview_resp{
+    msg_competition_type type = 1;
+    uint64 dama = 2;
+    repeated event_info list = 3;
+
+}
+
+message competition_time_info_req{
+
+}
+
+message competition_time_info_resp{
+    optional uint64 display_time = 1;
+    optional uint64 start_time = 2;
+    optional uint64 end_time = 3;
+    optional uint64 close_time = 4;
+}
+
+
+message give_up_req{
+
+}
+
+message give_up_resp{
+    bool  is_success = 1;  //
+}
+
+message  event_switch_room{
+    uint32  start_time = 1;  // 開始時間
+    uint32  round_end_time = 2; // 單輪結束時間
+    uint32  round = 3; // 當前輪
+}
+
+
+
+message notice_push{
+    msg_notice_type type = 1;
+    optional event_promotion_result promotion_result = 2;
+    optional event_schedule schedule = 3;
+    optional event_update_rank rank_info = 4;
+    optional event_result result = 5;
+    optional event_switch_room switch_room = 6;
+    optional event_room_ready room_ready = 7;
+    optional event_marquee marquee = 8;
+}
+
+message rank_winner_log{
+    uint32  game_id = 1;
+    uint32  room_type = 2;
+    uint32  user_id = 3;
+    bullet_type  bullet_type = 4;
+    uint32  award_chips = 5;
+    uint32  award_time = 6;
+}
+
+message week_rank{
+    uint32  user_id = 1;
+    uint64  score = 2;
+    uint32  room_type = 3;
+    uint32  time = 4;
+}
+
+message player_award_log{
+    uint32  game_id = 1;
+    uint32  room_type = 2;
+    uint32  rank = 3;
+    bullet_type  bullet_type = 4;
+    uint32  rank_award_chips = 5;
+    uint32  lucky_award_chips = 6;
+    uint32  award_time = 7;
+}
+
+message winner_list_req{
+
+}
+
+message winner_list_resp{
+    repeated rank_winner_log list = 1;
+    repeated player_award_log player_award_log = 2;
+
+}
+
+message week_rank_req{
+    msg_competition_type type = 1;
+
+}
+
+message week_rank_resp{
+    repeated week_rank  rank = 1;
+}

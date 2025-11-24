@@ -1,0 +1,56 @@
+syntax = "proto2";
+
+package bill;
+
+// 报表相关，查询汇总数据和详细数据
+import "msg_code.proto";
+import "msg_role.proto";
+import "msg_common.proto";
+
+enum c_cmd {
+    check_bill          = 0;
+    check_bill_detail   = 1;
+}
+
+// 查询账单
+message check_bill_req {
+    required uint64 start_time = 1; // 开始时间
+    required uint64 end_time = 2;   // 结束时间
+}
+
+message check_bill_resp {
+    required msg_code code         = 1;
+    repeated bill_summary infos     = 2; // 账单汇总信息
+}
+
+// 查询账单详情（子弹信息）
+message check_bill_detail_req {
+    required uint64 scene_id = 1; // 场景ID
+}
+
+message check_bill_detail_resp {
+    required msg_code code         = 1;
+    repeated bill_detail infos      = 2; // 账单详细信息
+}
+
+// 账单汇总信息
+message bill_summary {
+    required uint64 scene_id            = 1; // 场景ID
+    required room_type room_type_info   = 2; // 房间类型
+    required uint32 bullets_value        = 3; // 子弹总价值
+    required uint32 fishes_value         = 4; // 鱼的总价值
+    required uint32 profit               = 5; // 盈利
+    required uint64 start_time           = 6; // 开始时间
+    required uint64 end_time             = 7; // 结束时间
+}
+
+// 账单详细信息
+message bill_detail {
+    required uint32 bullet_no           = 1; // 子弹序号
+    required uint64 bullet_shoot_time   = 2; // 子弹发射时间
+    required uint32 bullet_value         = 3; // 子弹倍数
+    required uint32 profit               = 4; // 盈利
+    required uint32 multi                = 5; // 倍数
+    required uint32 fish_type            = 6; // 鱼类型
+    required bool fish_killed            = 7; // 鱼是否被击杀
+}

@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package clientLog;
+
+// 心跳请求（协议号10000）
+message beatHeartReq {}
+
+// 客户端登录协议（协议号10001）
+message clientLoginReq
+{
+    string login_type   = 1; // (h5, andriod, ios)
+    uint32 gt_id        = 2; // 游戏类别id
+    uint32 game_id      = 3; // 游戏id
+    string user_id      = 4; // 用户id
+    uint64 balance      = 5; // 当前金额(单位为分)
+    string device_info  = 6; // 设备详情
+    optional uint32 agent_id     = 7; // 代理id
+    optional uint32 top_agent_id     = 8; // 总社id
+}
+// 客户端日志统计（协议号10002）
+message clientLogReq
+{
+    uint64 balance    = 1; // 当前金额(单位为分)
+    uint32 type       = 2; // 操作类型
+    uint32 key        = 3; // 行为id
+    int64 value      = 4; // 行为对应值
+    string msg        = 5; // 补充信息
+}

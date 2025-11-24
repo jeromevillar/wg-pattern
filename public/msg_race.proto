@@ -1,0 +1,140 @@
+syntax = "proto3";
+
+package race;
+
+// 房间相关,包括战斗消息和获奖消息
+import "msg_role.proto";
+import "msg_common.proto";
+
+
+enum msg_race_code {
+    DEFAULT = 0;
+    SUCESS = 1;
+    FAIL = 2;
+}
+
+enum c_cmd {
+    race_day_req = 0;
+    race_day_resp = 1;
+    race_info_req = 2;
+    race_info_resp = 3;
+    race_rank_req = 4;
+    race_rank_resp = 5;
+    race_total_rank_req = 6;
+    race_game_over_req = 7;
+    race_over_sign_resp = 8;
+    race_game_over_resp = 9;
+    achive_award_req = 10;
+    achive_award_resp = 11;
+    race_account_resp = 12;
+}
+
+service msg_race_service {
+    rpc race_day (race_day_req) returns (race_day_resp);
+    rpc race_info (race_info_req) returns (race_info_resp);
+    rpc race_rank (race_rank_req) returns (race_rank_resp);
+    rpc race_total_rank (race_total_rank_req) returns (race_rank_resp);
+    rpc race_game_terminal (race_game_over_req) returns (undefined);
+    rpc race_game_over_sign (undefined) returns (race_over_sign_resp);
+    rpc race_game_over (undefined) returns (race_game_over_resp);
+    rpc achive_award (achive_award_req) returns (achive_award_resp);
+    rpc left_race_account (undefined) returns (race_account_resp);
+}
+
+message largeward_race {
+    uint32 race_id = 1; //赛id
+    uint32 rank = 2;
+    uint64 startime = 3;
+    uint64 forbidden_time = 4;
+    uint64 endtime = 5;
+    string race_name = 6;
+    uint32 people  = 7;
+}
+
+// 大奖赛请求列表
+message race_day_req {
+
+}
+
+message race_day_resp {
+    repeated largeward_race race = 1;
+}
+
+// 大奖赛请求详细信息
+message race_info_req {
+    uint32 race_id = 1;
+}
+
+message award_info {
+    uint32 chips = 1;
+    uint32 rank = 2;
+}
+
+message race_info_resp {
+    uint32 bullet_count = 1;
+    uint32 entry_fee = 2;
+    uint32 retry_fee = 3;
+    uint32 chances = 4;
+    uint32 people = 5;
+    uint32 bullet_left = 6;
+    uint32 left_chances = 7;
+    repeated award_info award = 8;
+}
+
+// 大奖赛请求排行
+message race_rank_req {
+    uint32 index = 1; // 索引第几页
+    uint32 race_id = 2; //赛id
+}
+
+// 积分信息
+message race_rank_info {
+    string nickname = 1; // 昵称
+    uint32 point = 2; // 积分
+}
+// 大奖赛请求排行返回
+message race_rank_resp {
+    repeated race_rank_info role = 1;
+    uint32 self_rank = 2;
+    uint32 self_point = 3;
+}
+
+// 大奖赛请求所有排行榜
+message race_total_rank_req {
+    uint32 race_id = 1; //赛id
+}
+message race_game_over_req{
+    uint32 race_id = 1; //赛id
+}
+// 客户端请求结算,如未结束返回此协议纠正数据
+message race_over_sign_resp{
+    uint64 jettonshow = 7; // 显示的筹码
+    uint32 bulletleft = 8; //子弹剩余
+}
+// 客户端请求结算,如结束返回此协议
+message race_game_over_resp {
+    uint32 high_point = 1;
+    uint32 self_rank = 2;
+    uint32 self_point = 3;
+    bool game_over = 4;
+    uint32 left_chances = 5;
+    uint64 jetton = 6;   // 账户额
+    uint32 people = 7;
+    uint32 retry_fee = 8; //重复尝试费用
+}
+// 领奖
+message achive_award_req {
+    uint32 race_id = 1;
+    string key = 2;
+}
+// 领奖返回
+message achive_award_resp {
+    msg_race_code code = 1;
+    optional uint64 jetton_show = 2; // 显示筹码数
+}
+
+
+// 未领奖返回
+message race_account_resp {
+    uint32 left_race_price = 1;
+}

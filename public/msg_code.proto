@@ -1,0 +1,8 @@
+syntax = "proto2";
+
+package code;
+
+enum msg_code {
+    CODE_SUCCESS = 1;
+    CODE_FAIL = 2;
+}

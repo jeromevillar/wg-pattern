@@ -1,0 +1,1717 @@
+syntax = "proto3";
+
+package com_protocol;
+
+//==================================== request ====================================
+
+// cmd 11
+message ClientLoginReq {
+	int32 loginType = 1;
+	string version = 2;
+	string username = 3;
+	string passwd = 4;
+	int32 accountType = 5;
+	string userInputNickname = 6;
+	string userInputPortraitId = 7;
+	int32 userInputGender = 8;
+	string loginToken = 9;
+	uint32 clientType = 10;
+	int32 osType = 11;
+	uint32 pkgId = 12;
+	uint32 gameType = 13;
+	uint64 userId = 14;
+	string agentCode = 15;
+	string deviceId = 16;
+	string fingerPrintId = 17;
+	string roomId = 18;
+	uint32 tableId = 19;
+}
+
+// cmd 207
+message DivisionActivityReq {
+	int32 gameType = 1;
+}
+
+// cmd 10046
+message ClientReEnterGameReq {
+	string username = 1;
+}
+
+// cmd 12011
+message FortuneToucanStartReq {
+	uint32 index = 1;
+	uint32 betRateIdx = 2;
+	uint32 totalRound = 3;
+	bool currRound = 4;
+	double clientBetValue = 5;
+}
+
+// cmd 10046
+message ClientGetUserRecordInfoReq {
+	uint32 PageIndex = 1;
+	uint32 PageSize = 2;
+	uint32 OptType = 3;
+}
+
+
+//==================================== response ====================================
+
+// cmd 3
+message ClientDisconnect {
+	int32 reason = 1;
+	string playerIp = 2;
+	bool isDelToken = 3;
+}
+
+
+// cmd 12
+message ClientLoginSingleGameRsp {
+	int32 result = 1;
+	string playerIp = 2;
+	string enterServerId = 3;
+	uint32 enterServerType = 4;
+
+	DetailInfo detailInfo = 6;
+	ChessHallRoomInfo roomInfo = 11;
+	ChessHallGameData gameInfo = 12;
+
+	repeated ClientRoomPlayerInfo userInfo = 13;
+
+	double needGold = 14;
+	int32 playFlag = 15;
+	uint32 tableType = 16;
+	uint32 seatId = 17;
+	uint32 opt = 18;
+	uint64 timeNow = 19;
+}
+
+// cmd  1004
+message BroadCastPrizePoolTotalAmount {
+	double totalAmount = 1;
+	int64 nextDivisionTs = 2;
+}
+
+// cmd 208
+message DivisionActivityRsp{
+	uint32 result = 1;
+	Activity activity = 2;
+	Team team = 3;
+	Member me = 4;
+	bool existsUnread = 5;
+	bool isLeader = 6;
+}
+
+// cmd 10017
+message ClientReEnterGameRsp {
+	int32 result = 1;
+	ChessHallRoomInfo roomInfo = 2;
+	ChessHallGameData gameInfo = 3;
+	repeated ClientRoomPlayerInfo userInfo = 4;
+	uint32 tableType = 5;
+	bool isReserveLeave = 6;
+	double currGold = 7;
+}
+
+// cmd 12012
+message FortuneToucanStartRsp {
+	uint32 result = 1;
+	FortuneToucanGameOpenInfo gameDataInfo = 2;
+}
+
+// cmd 12041
+message ClientNewUserTipsRsp {
+	uint32 isDisplay = 1;
+	uint32 canSkip = 2;
+	uint32 switch = 3;
+}
+
+
+// ==================================== common ====================================
+message FortuneToucanGameInfo {
+	int64 leaveTime = 1;
+	int64 showTime = 2;
+	FortuneToucanGameOpenInfo gameOpenInfo = 3;
+}
+
+message DetailInfo {
+	StaticInfo staticInfo = 1;
+  	DynamicInfo dynamicInfo = 2;
+}
+
+message StaticInfo {
+	string username = 1;
+	string nickname = 2;
+	string portraitId = 3;
+	int32 gender = 4;
+	string registerTime = 5;
+	string personSign = 6;
+	string realname = 7;
+	string qqNum = 8;
+	string address = 9;
+	string birthday = 10;
+	string mobilePhone = 11;
+	string email = 12;
+	uint32 age = 13;
+	string idc = 14;
+	string otherContact = 15;
+	string wechatId = 16;
+	int32 strongboxStatus = 17;
+	string deviceId = 18;
+	int64 useridx = 19;
+	string platformAccount = 20;
+	string registerDeviceId = 21;
+	string registerIp = 22;
+	string loginDeviceId = 23;
+	string loginIp = 24;
+	int32 userStatus = 25;
+	int32 isTrainning = 26;
+	int32 clientType = 27;
+	int32 userTag = 28;
+	string agentCode = 29;
+	int32 isTryNumber = 30;
+	string strUserIdx = 31;
+}
+
+message DynamicInfo {
+	uint32 level = 1;
+	uint32 curLevelExp = 2;
+	uint32 vipLevel = 3;
+	uint32 vipCurLevelExp = 4;
+	string vipTimeLimit = 5;
+	double rmbGold = 6;
+	double gameGold = 7;
+	double bankBalance = 8;
+	double sumRechargeValue = 9;
+	uint32 sumRechargeCount = 10;
+	double prizePoolGold = 11;
+}
+  
+message ChessHallRoomInfo {
+	ChessHallRoomBaseInfo baseInfo = 1;
+  	bytes gameRoomInfo = 2;
+}
+
+
+message ChessHallRoomBaseInfo {
+	uint32 gameType = 1;
+	double base = 2;
+	double rate = 3;
+	uint32 level = 4;
+	uint32 playerCount = 5;
+	uint32 roomType = 6;
+	double maxRate = 7;
+	double needMinGold = 8;
+	int32 isCanView = 9;
+	uint32 waitPlaySecs = 10;
+	int32 isAutoPlay = 11;
+	int32 isHalfwayJoin = 12;
+	uint32 tableId = 13;
+	string username = 14;
+	string nickname = 15;
+	string portraitId = 16;
+	double needMaxGold = 17;
+	repeated CommonChipConfig chipConfig = 18;
+	ChangeTableConfig changeTableConfig = 19;
+	string AgentOssUrl = 20;
+	repeated RuleFontInfo FontInfos = 21;
+	string roomName = 22;
+	CommonBetServerCfgInfo betCfgInfo = 23;
+}
+
+message ChangeTableConfig {
+
+}
+
+message RuleFontInfo {
+
+}
+
+message CommonBetServerCfgInfo {
+	repeated double betValueList = 1;
+	repeated uint32 betMultiple = 2;
+	repeated uint32 autoTimesMultiple = 3;
+	uint32 betLine = 4;
+	repeated double betValueListDragon = 5;
+	uint32 normalTimes = 6;
+	double normalBets = 7;
+}
+
+message CommonChipConfig {
+	uint32 chipSeq = 1;
+	double chipValue = 2;
+}
+
+message ChessHallGameData {
+	ChessHallGameBaseData baseData = 1;
+	bytes gameData = 2;
+}
+
+message ChessHallGameBaseData {
+	uint32 gameType = 1;
+	int32 gameStatus = 2;
+	double currentBet = 3;
+	uint32 tableId = 4;
+	uint32 roomTableType = 5;
+	string tableGameId = 6;
+	int64 clubDeskStartDt = 7;
+	int64 clubDeskDuration = 8;
+	int64 leaveTime = 9;
+	int64 showTime = 10;
+	SlotBetSettings slotBetSettings = 11;
+}
+
+message SlotBetSettings {
+	double singleLineAmount = 1;
+	int32 betMultiplier = 2;
+	bool bonusPlay = 3;
+}
+
+message ClientRoomPlayerInfo {
+	DetailInfo detailInfo = 1;
+	int32 seatId = 2;
+	int32 status = 3;
+	bool isSitDown = 4;
+}
+
+message Activity {
+	string roundId = 1;
+	int64 divideAt = 2;
+	double totalAmount = 3;
+	int32 minMembersCount = 4;
+}
+  
+message Team {
+	string teamId = 1;
+	string code = 2;
+	int32 membersCount = 3;
+	repeated Member members = 4;
+	double totalBet = 5;
+	string betRatio = 6;
+	int32 completedCount = 7;
+	bool isReached = 8;
+}
+  
+message Member {
+	string memberId = 1;
+	int32 taskType = 2;
+	double approvedAmount = 3;
+	double completedAmount = 4;
+	double totalBet = 5;
+}
+
+message FortuneToucanGameOpenInfo {
+	double playerGold = 1;
+	double finishGold = 2;
+	double allOld = 3;
+	FortuneToucanStartReq areaBet = 4;
+	string recordId = 5;
+	uint32 isTing = 6;
+	repeated FortuneToucanCardInfo mainCard = 7;
+	uint32 synbol = 9;
+	repeated double winMultipleArr = 10;
+}
+
+message FortuneToucanCardInfo {
+	repeated uint32 card1 = 1;
+	repeated uint32 card2 = 2;
+	repeated uint32 card3 = 3;
+	repeated FortuneToucanSettlement linInfo = 4;
+	repeated uint32 indexs = 5;
+	uint32 fullScreen = 6;
+	uint32 fullId = 7;
+}
+
+message FortuneToucanSettlement {
+	uint32 linId = 1;
+	repeated uint32 linArr = 2;
+	uint32 cardId = 3;
+	double rollGold = 4;
+}
+
+message CommonElecBetRsp {
+	int32 result = 1;
+	repeated Uint32Array index = 2;
+	repeated Uint32Array2D screen = 3;
+	repeated CommonElecLineInfo lines = 4;
+	bool isTing = 5;
+	bool isSpecial = 6;
+	bool isMiPai = 7;
+	double win = 8;
+	double gold = 9;
+	string recordId = 10;
+	double betValue = 11;
+	bool isAllSame = 12;
+	double totalReward = 13;
+	uint32 mulNormal = 14;
+	uint32 specialValue = 15;
+	uint32 mulEx = 16;
+	double beforeSettleGold = 17;
+}
+  
+message Uint32Array {
+	repeated uint32 cards = 1;
+}
+  
+message Uint32Array2D {
+	repeated Uint32Array arr = 1;
+}
+
+message CommonElecLineInfo {
+	repeated uint32 lineDetail = 1;
+	double reward = 2;
+	uint32 lineNo = 3;
+}
+
+message CommonElecBetReq {
+	uint32 betIdx = 1;
+	uint32 betTimesIdx = 2;        
+	CommonElecAutoInfo autoInfo = 3; 
+	double clientBetValue = 4;  
+}
+  
+message CommonElecReenter {
+	CommonElecBetRsp msg = 1;
+}
+  
+message CommonElecAutoInfo {
+	int32 totalRound = 2;
+	bool isFirst = 3;
+}
+
+message DragonTreasureStartReq {
+	uint32 amountIdx = 1;
+	uint32 rateIdx = 2;
+	uint32 autoRound = 3;
+	bool autoFirst = 4;
+	double clientBetValue = 5;
+}
+
+message DragonTreasureStartRsp {
+	uint32 result = 1;
+	DragonTreasureGameOpenInfo gameDataInfo = 2;
+}
+
+message DragonTreasureGameOpenInfo {
+	double playerGold = 1;
+	double finishGold = 2;
+	double allOld = 3;
+	DragonTreasureStartReq areaBet = 4;
+	string recordId = 5;
+	repeated DragonTreasureCardInfo mainCard = 6; 
+	bool isFreeGame = 7;
+	bool isTing = 8;
+	repeated double winMultipleArr = 9;
+}
+
+message DragonTreasureCardInfo {
+	repeated DragonTreasureCard col1 = 1; 
+	repeated DragonTreasureCard col2 = 2; 
+	repeated DragonTreasureCard col3 = 3; 
+	repeated DragonTreasureSettlement lineInfo = 4;
+	repeated uint32 indexs = 5;
+}
+  
+message DragonTreasureCard {
+	uint32 cardId = 1;
+	double extend = 2;
+}
+  
+message DragonTreasureSettlement {
+	uint32 lineId = 1;
+	repeated uint32 idxs1 = 2;
+	repeated uint32 idxs2 = 3;
+	repeated uint32 idxs3 = 4;
+	uint32 winCardId = 5;
+	double lineGold = 6;
+}
+
+message MrTurtleStartReq {
+	uint32 index = 1;
+	uint32 betRateIdx = 2;
+	uint32 totalRound = 3;
+	uint32 currRound = 4;
+	double clientBetValue = 5;
+}
+
+message MrTurtleStartRsp {
+	uint32 result = 1;
+	MrTurtleGameOpenInfo gameDataInfo = 2;
+}
+
+message MrTurtleGameOpenInfo {
+	double playerGold = 1;
+	double finishGold = 2;
+	double allOld = 3;
+	MrTurtleStartReq areaBet = 4; 
+	string recordId = 5;
+	uint32 isTing = 6;
+	repeated MrTurtleCardInfo mainCard = 7;
+	repeated double winMultipleArr = 10;
+}
+
+message MrTurtleCardInfo {
+	repeated uint32 card1 = 1;
+	repeated uint32 card2 = 2;
+	repeated uint32 card3 = 3;
+	repeated MrTurtleSettlement linInfo = 4;
+	repeated uint32 indexs = 5;
+	uint32 fullScreen = 6;
+	uint32 fullId = 7;
+}
+
+message MrTurtleSettlement {
+	uint32 linId = 1;
+	repeated uint32 linArr = 2;
+	uint32 cardId = 3;
+	double rollGold = 4;
+}
+  
+message FestivalSaintsStartReq {
+	uint32 index = 1;
+	uint32 betRateIdx = 2;
+	uint32 totalRound = 3;
+	uint32 currRound = 4;
+	double clientBetValue = 5;
+}
+
+message FestivalSaintsStartRsp {
+	uint32 result = 1;
+	FestivalSaintsGameOpenInfo gameDataInfo = 2;
+}
+
+message FestivalSaintsGameOpenInfo {
+	double playerGold = 1;
+	double finishGold = 2;
+	double allOld = 3;
+	FestivalSaintsStartReq areaBet = 4; 
+	string recordId = 5;
+	uint32 isTing = 6;
+	repeated FestivalSaintsCardInfo mainCard = 7; 
+	repeated uint32 listen = 8;
+	repeated uint32 scatter = 9;
+	repeated double winMultipleArr = 10;
+	uint32 windingMultiple = 11;
+}
+
+message FestivalSaintsCardInfo {
+	FestivalSaintsCard festivalSaintsCardOne = 1; 
+	FestivalSaintsCard festivalSaintsCardTwo = 2; 
+	bool isSp = 3;
+	uint32 scatter = 4;
+}
+  
+message FestivalSaintsCard {
+	repeated uint32 card1 = 1;
+	repeated uint32 card2 = 2;
+	repeated uint32 card3 = 3;
+	repeated uint32 card4 = 4;
+	repeated uint32 card5 = 5;
+	repeated uint32 indexs = 6;
+	repeated FestivalSaintsSettlement linInfo = 7;
+	repeated uint32 scatterPos = 8;
+}
+  
+
+message FestivalSaintsSettlement {
+	uint32 linId = 1;
+	uint32 linCount = 2;
+	uint32 cardId = 3;
+	double rollGold = 4;
+	bool isWindingMultiple = 5;
+	uint32 scatter = 6;
+	repeated uint32 linPos = 7;
+	uint32 winCount = 8;
+}
+  
+message QueenOfBountyStartReq {
+	uint32 index = 1;
+	uint32 betRateIdx = 2;
+	uint32 totalRound = 3;
+	double clientBetValue = 4;
+}
+  
+message QueenOfBountyStartRsp {
+	uint32 result = 1;
+	QueenOfBountyGameOpenInfo gameDataInfo = 2; 
+}
+  
+message QueenOfBountySpinReq {
+	uint32 spinIndex = 1;
+	uint32 roundIndex = 2;
+}
+
+message QueenOfBountySpinRsp {
+	uint32 result = 1;
+	uint32 curSpinIndex = 2;
+	uint32 curRoundIndex = 3;
+}
+
+message QueenOfBountyGameOpenInfo {
+	double playerGold = 1;
+	double finishGold = 2;
+	double allOld = 3;
+	string recordId = 4;
+	repeated QueenOfBountySpin spins = 5;   
+	repeated double winMultipleArr = 6;
+	uint32 freeSubtitleLevel = 7;
+	uint32 level = 8;
+	double freeFinishGold = 9;
+}
+  
+message QueenOfBountySpin {
+	double finishGold = 1;
+	double allOld = 2;
+	repeated QueenOfBountyRound rounds = 3;  
+	uint32 scatterNum = 4;
+	repeated uint32 listen = 5;
+	repeated uint32 indexs = 6;
+	uint32 subtitleLevel = 7;
+}
+
+message QueenOfBountyRound {
+	double finishGold = 1;
+	double allOld = 2;
+	QueenOfBountyCardInfo mainCard = 3; 
+	uint32 subtitleLevel = 4;
+}
+
+message QueenOfBountyCardInfo {
+	repeated uint32 card1 = 1;
+	repeated uint32 card2 = 2;
+	repeated uint32 card3 = 3;
+	repeated uint32 card4 = 4;
+	repeated uint32 card5 = 5;
+	repeated QueenOfBountySettlement linInfo = 6; 
+	repeated QueenOfBountyLinPosinfo wildInfo = 7; 
+}
+
+message QueenOfBountySettlement {
+	repeated QueenOfBountyLinPosinfo lineInfo = 1; 
+	uint32 cardId = 2;
+	double rollGold = 3;
+	uint32 lineNum = 4;
+}
+
+message QueenOfBountyLinPosinfo {
+	repeated uint32 rhdbPos = 1;
+}
+
+message WildBountyShowdownStartReq {
+	uint32 index = 1;
+	uint32 betRateIdx = 2;
+	uint32 totalRound = 3;
+	double clientBetValue = 4;
+	bool buyFreeGame = 5;
+}
+
+message WildBountyShowdownStartRsp {
+	int32 result = 1;
+	WildBountyShowdownGameOpenInfo gameDataInfo = 2;
+}
+
+message WildBountyShowdownGameOpenInfo {
+	double playerGold = 1;
+	double finishGold = 2;
+	double allOld = 3;
+	string recordId = 4;
+	WildBountyShowdownSpin spin = 5; 
+	repeated double winMultipleArr = 6;
+	uint32 freeSubtitleLevel = 7;
+	uint32 totalSpinNum = 8;
+	uint32 curSpinNum = 9;
+	double lastFinishGold = 10;
+	double clientBetValue = 11;
+}
+  
+message WildBountyShowdownSpin {
+	double finishGold = 1;
+	double allOld = 2;
+	WildBountyShowdownRound round = 3; 
+	uint32 scatterNum = 4;
+	repeated uint32 indexs = 5;
+	uint32 subtitleLevel = 6;
+	uint32 totalRoundNum = 8;
+	uint32 curRoundNum = 9;
+	uint32 addFreeGameNum = 10;
+	uint32 surplusFreeGameNum = 11;
+}
+  
+message WildBountyShowdownRound {
+	double finishGold = 1;
+	double allOld = 2;
+	WildBountyShowdownCardInfo mainCard = 3; 
+	uint32 subtitleLevel = 4;
+}
+  
+
+message WildBountyShowdownCardInfo {
+	repeated uint32 card1 = 1;
+	repeated uint32 card2 = 2;
+	repeated uint32 card3 = 3;
+	repeated uint32 card4 = 4;
+	repeated uint32 card5 = 5;
+	repeated uint32 card6 = 6;
+	repeated WildBountyShowdownSettlement settleInfo = 7; 
+	repeated WildBountyShowdownLinPos wildPos = 8;    
+}
+
+message WildBountyShowdownSettlement {
+	repeated WildBountyShowdownLinPos linePos = 1; 
+	uint32 cardId = 2;
+	double rollGold = 3;
+}
+
+message WildBountyShowdownLinPos {
+	repeated uint32 pos = 1;
+}
+  
+message MahjongWaysStartReq {
+	uint32 index = 1;
+	uint32 betRateIdx = 2;
+	uint32 totalRound = 3;
+	bool currRound = 4;
+	double clientBetValue = 5;
+	bool freeProgress = 6;
+  }
+  
+  message MahjongWaysStartRsp {
+	uint32 result = 1;
+	MahjongWaysGameOpenInfo gameDataInfo = 2; 
+	bool freeProgress = 3;
+  }
+  
+  message MahjongWaysGameOpenInfo {
+	double playerGold = 1;
+	double finishGold = 2;
+	double allOld = 3;
+	string recordId = 4;
+	repeated MahjongWaysSpin spins = 5;     
+	repeated double winMultipleArr = 6;
+	uint32 freeSubtitleLevel = 7;
+  }
+  
+  message MahjongWaysSpin {
+	double finishGold = 1;
+	double allOld = 2;
+	repeated MahjongWaysRound rounds = 3;        
+	uint32 scatterNum = 4;
+	repeated uint32 listen = 5;
+	repeated uint32 indexs = 6;
+	uint32 subtitleLevel = 7;
+  }
+  
+  message MahjongWaysRound {
+	double finishGold = 1;
+	double allOld = 2;
+	MahjongWaysCardInfo mainCard = 3;  
+	uint32 subtitleLevel = 4;
+  }
+  
+  message MahjongWaysCardInfo {
+	repeated uint32 card1 = 1;
+	repeated uint32 card2 = 2;
+	repeated uint32 card3 = 3;
+	repeated uint32 card4 = 4;
+	repeated uint32 card5 = 5;
+  
+	repeated MahjongWaysSettlement linInfo = 6; 
+	repeated MahjongWaysLinPosinfo wildInfo = 7;
+  }
+  
+  message MahjongWaysSettlement {
+	repeated MahjongWaysLinPosinfo lineInfo = 1; 
+	uint32 cardId = 2;
+	double rollGold = 3;
+  }
+  
+
+message MahjongWaysLinPosinfo {
+    repeated uint32 rhdbPos = 1;
+}
+    
+
+  message PiratesTreasureStartReq {
+	uint32 index = 1;
+	uint32 betRateIdx = 2;
+	uint32 totalRound = 3;
+	bool currRound = 4;
+	double clientBetValue = 5;
+  }
+  
+  message PiratesTreasureStartRsp {
+	uint32 result = 1;
+	PiratesTreasureGameOpenInfo gameDataInfo = 2;
+  }
+  
+  message PiratesTreasureGameOpenInfo {
+	double playerGold = 1;
+	double finishGold = 2;
+	double allOld = 3;
+	PiratesTreasureStartReq areaBet = 4;          
+	string recordId = 5;
+	uint32 isTing = 6;
+	repeated PiratesTreasureCardInfo mainCard = 7; 
+	uint32 synbol = 9;
+	repeated double winMultipleArr = 10;
+	uint32 BGNum = 11;
+  }
+  
+  message PiratesTreasureCardInfo {
+	repeated uint32 card1 = 1;
+	repeated uint32 card2 = 2;
+	repeated uint32 card3 = 3;
+	repeated PiratesTreasureSettlement linInfo = 4;  
+	repeated uint32 indexs = 5;
+  }
+  
+  message PiratesTreasureSettlement {
+	uint32 linId = 1;
+	repeated uint32 linArr = 2;
+	uint32 cardId = 3;
+	double rollGold = 4;
+  }
+  
+  message CrazyStartReq {
+	uint32 index = 1;
+	uint32 betRateIdx = 2;
+	uint32 totalRound = 3;
+	uint32 currRound = 4;
+	double clientBetValue = 5;
+  }
+  
+  message CrazyStartRsp {
+	uint32 result = 1;
+	CrazyGameOpenInfo gameDataInfo = 2;
+  }
+  
+  message CrazyGameOpenInfo {
+	double playerGold = 1;
+	double finishGold = 2;
+	double allOld = 3;
+	CrazyStartReq areaBet = 4; 
+	string recordId = 5;
+	uint32 isTing = 6;
+	repeated CrazyCardInfo mainCard = 7; 
+	repeated double winMultipleArr = 8;
+	repeated double symbolBasicWinningMultiplier = 9;
+	repeated double symbolSpecialWinningMultiplier = 10;
+	double playerGoldBefore = 11;
+  }
+  
+  message CrazyCardInfo {
+	CrazyCard crazyCard = 1;  
+  }
+  
+  message CrazyCard {
+	repeated uint32 card1 = 1;
+	repeated uint32 card2 = 2;
+	repeated uint32 card3 = 3;
+	repeated uint32 card4 = 4;
+	repeated uint32 indexs = 6;
+	repeated CrazySettlement linInfo = 7;
+  }
+  
+  message CrazySettlement {
+	uint32 linId = 1;
+	uint32 linCount = 2;
+	uint32 cardId = 3;
+	double rollGold = 4;
+	repeated uint32 linPos = 7;
+	bool isBasicReelSymbols = 8;
+	uint32 cardIdSpecialReelSymbols = 9;
+	double baseRollGold = 10;
+	double specialRollGold = 11;
+	double baseCardOdds = 12;
+  }
+  
+  
+  message DragonTreasure2StartRsp {
+	uint32 result = 1;
+	DragonTreasure2GameOpenInfo gameDataInfo = 2;
+  }
+  
+  
+  message DragonTreasure2Card {
+	uint32 cardId = 1;
+	double extend = 2;
+	uint32 multi = 3;
+  }
+
+  message SambaDanceStartReq {
+	uint32 index = 1;
+	uint32 betRateIdx = 2;
+	uint32 totalRound = 3;
+	uint32 currRound = 4;
+	bool isExMode = 5;
+	double clientBetValue = 6;
+  }
+
+  message SambaDanceStartRsp {
+	uint32 result = 1;
+	SambaDanceGameOpenInfo gameDataInfo = 2;
+  }
+
+  message SambaDanceGameInfo {
+	SambaDanceGameOpenInfo gameOpenInfo = 1;
+	uint32 leaveTime = 3;
+	uint32 showTime = 4;
+  }
+
+  message SambaDanceGameOpenInfo {
+	double playerGold = 1;
+	double finishGold = 2;
+	double allOld = 3;
+	SambaDanceStartReq areaBet = 4;
+	string recordId = 5;
+	repeated SambaDanceCardInfo mainCard = 6;
+	repeated double winMultipleArr = 7;
+	bool isExMode = 8;
+	repeated uint32 listen = 9;
+  }
+
+  message SambaDanceCardInfo {
+	repeated uint32 card1 = 1;
+	repeated uint32 card2 = 2;
+	repeated uint32 card3 = 3;
+	repeated uint32 card4 = 4;
+	repeated SambaDanceSettlement linInfo = 5;
+	repeated uint32 indexs = 6;
+  }
+
+  message SambaDanceSettlement {
+	uint32 lineId = 1;
+	repeated uint32 lineIconsIdx = 2;
+	double rollGold = 3;
+	uint32 winIconId = 4;
+  }
+
+  message TreasureMarmosetsStartReq {
+	uint32 index = 1;
+	uint32 betRateIdx = 2;
+	uint32 totalRound = 3;
+	bool currRound = 4;
+	double clientBetValue = 5;
+  }
+
+  message TreasureMarmosetsStartRsp {
+	uint32 result = 1;
+	TreasureMarmosetsGameOpenInfo gameDataInfo = 2;
+  }
+
+  message TreasureMarmosetsGameOpenInfo {
+	double playerGold = 1;
+	double finishGold = 2;
+	double allOld = 3;
+	string recordId = 4;
+	repeated uint32 listen = 5;
+	repeated TreasureMarmosetsCardInfo mainCard = 6;
+	uint32 wild = 7;
+	repeated double winMultipleArr = 8;
+  }
+
+  message TreasureMarmosetsCardInfo {
+	repeated uint32 card1 = 1;
+	repeated uint32 card2 = 2;
+	repeated uint32 card3 = 3;
+	repeated uint32 card4 = 4;
+	repeated uint32 card5 = 5;
+	repeated TreasureMarmosetsSettlement linInfo = 6;
+	repeated uint32 indexs = 7;
+	double cardOld = 8;
+	uint32 duoBaoNum = 9;
+	uint32 baiDaNum = 10;
+  }
+
+  message TreasureMarmosetsSettlement {
+	repeated LinPosinfo lineInfo = 1;
+	uint32 cardId = 2;
+	double rollGold = 3;
+  }
+
+  message LinPosinfo {
+	repeated uint32 rhdbPos = 1;
+  }
+
+  message DragonVsTigerStartReq {
+	uint32 index = 1;
+	uint32 betRateIdx = 2;
+	uint32 totalRound = 3;
+	uint32 currRound = 4;
+	repeated uint32 selectedArea = 5;
+	double clientBetValue = 6;
+  }
+
+  message DragonVsTigerStartRsp {
+	uint32 result = 1;
+	DragonVsTigerGameOpenInfo gameDataInfo = 2;
+  }
+
+  message DragonVsTigerGameOpenInfo {
+	double playerGold = 1;
+	double finishGold = 2;
+	double allOld = 3;
+	DragonVsTigerStartReq areaBet = 4;
+	string recordId = 5;
+	repeated DragonVsTigerCardInfo mainCard = 7;
+	repeated double winMultipleArr = 10;
+	double afterBetGold = 11;
+	repeated double subtitleWinMultipleArr = 12;
+	double baseFinishGold = 13;
+  }
+
+  message DragonVsTigerCardInfo {
+	repeated uint32 card1 = 1;
+	repeated uint32 card2 = 2;
+	repeated uint32 card3 = 3;
+	repeated DragonVsTigerSettlement linInfo = 4;
+	repeated uint32 indexs = 5;
+	uint32 area = 6;
+	bool isTing = 7;
+  }
+
+  message DragonVsTigerSettlement {
+	uint32 linId = 1;
+	repeated uint32 linArr = 2;
+	repeated uint32 cardId = 3;
+	double rollGold = 4;
+	double old = 5;
+  }
+
+  message WorldCupFreeStartReq {
+	uint32 playerNum = 1;
+	bool stater = 2;
+  }
+
+  message WorldCupStartReq {
+	uint32 index = 1;
+	uint32 betRateIdx = 2;
+	uint32 totalRound = 3;
+	bool currRound = 4;
+	double clientBetValue = 5;
+  }
+
+  
+message WorldCupStartRsp {
+	uint32 result = 1;
+	WorldCupGameOpenInfo gameDataInfo = 2;
+  }
+
+  message WorldCupGameOpenInfo {
+	double playerGold = 1;
+	double finishGold = 2;
+	double allOld = 3;
+	string recordId = 4;
+	repeated uint32 listen = 5;
+	repeated WorldCupCardInfo cardInfo = 6;
+	repeated double winMultipleArr = 7;
+	bool isFree = 8;
+	uint64 startGameTime = 9;
+	uint64 endGameTime = 10;
+  }
+
+  message WorldCupCardInfo {
+	repeated uint32 card1 = 1;
+	repeated uint32 card2 = 2;
+	repeated uint32 card3 = 3;
+	repeated uint32 card4 = 4;
+	repeated uint32 card5 = 5;
+	repeated WorldCupSettlement linInfo = 6;
+	repeated uint32 indexs = 7;
+	double cardOld = 8;
+	uint32 duoBaoNum = 9;
+	uint32 baiDaNum = 10;
+  }
+
+  message WorldCupSettlement {
+	uint32 linId = 1;
+	uint32 linLen = 2;
+	uint32 cardId = 3;
+	double rollGold = 4;
+  }
+
+  message WuKongStartReq {
+	uint32 index = 1;
+	uint32 betRateIdx = 2;
+	uint32 totalRound = 3;
+	bool currRound = 4;
+	double clientBetValue = 5;
+  }
+
+  
+message WuKongStartRsp {
+	uint32 result = 1;
+	WuKongGameOpenInfo gameDataInfo = 2;
+  }
+
+  message WuKongGameOpenInfo {
+	double playerGold = 1;
+	double finishGold = 2;
+	double allOld = 3;
+	string recordId = 4;
+	repeated uint32 listen = 5;
+	WuKongCardInfo cardInfo = 6;
+	repeated double winMultipleArr = 7;
+	WuKongStartReq req = 8;
+	uint64 startGameTime = 9;
+	uint64 endGameTime = 10;
+  }
+
+  
+message WuKongCardInfo {
+	repeated uint32 card1 = 1;
+	repeated uint32 card2 = 2;
+	repeated uint32 card3 = 3;
+	repeated uint32 card4 = 4;
+	repeated uint32 card5 = 5;
+	repeated WuKongSettlement linInfo = 6;
+	repeated uint32 indexs = 7;
+	double cardOld = 8;
+  }
+
+  message WuKongSettlement {
+	uint32 linId = 1;
+	uint32 linLen = 2;
+	uint32 cardId = 3;
+	double rollGold = 4;
+	repeated uint32 linePos = 5;
+  }
+
+  message FishingMasterBetInfoReq {
+	double betSum = 1;
+	uint32 autoGameNum = 4;
+	uint32 curGameNum = 5;
+  }
+
+  
+message FishingMasterBetInfoRsp {
+	uint32 result = 1;
+	FishingMasterGameOpenInfo gameDataInfo = 2;
+  }
+
+  message FishingMasterGameOpenInfo {
+	double playerGold = 1;
+	double finishGold = 2;
+	double allOld = 3;
+	FishingMasterBetInfoReq areaBet = 4;
+	string recordId = 5;
+	repeated FishingMasterCardInfo mainCard = 7;
+	repeated double winMultipleArr = 10;
+	double afterBetGold = 11;
+  }
+
+  
+message FishingMasterCardInfo {
+	string fishId = 1;
+	double fishOdds = 2;
+	double rollGold = 3;
+  }
+
+  message AnimalKingDomStartReq {
+	uint32 index = 1;
+	uint32 betRateIdx = 2;
+	uint32 totalRound = 3;
+	uint32 currRound = 4;
+	double clientBetValue = 5;
+  }
+
+  message AnimalKingDomStartRsp {
+	uint32 result = 1;
+	AnimalKingGameOpenInfo gameDataInfo = 2;
+  }
+
+  message AnimalKingGameOpenInfo {
+	double playerGold = 1;
+	double finishGold = 2;
+	double allOld = 3;
+	AnimalKingDomStartReq areaBet = 4;       
+	string recordId = 5;
+  
+	repeated AnimalKingDomCardInfo mainCard = 7;  
+	repeated AnimalKingDomCardInfo freeCard = 8;   
+  
+	repeated double winMultipleArr = 10;
+	double afterBetGold = 11;
+  
+	repeated uint32 listen = 12;
+  }
+
+  message AnimalKingDomCardInfo {
+	repeated Scree screen = 2;   
+	repeated LineInfos lines = 3;  
+  
+	repeated uint32 boxPos = 4;
+	repeated uint32 featurePos = 6;
+  
+	uint32 featureSymbol = 7;
+	double multiple = 8;
+  
+	repeated uint32 nextFeaturePos = 9;
+  }
+
+  message Scree {
+	repeated uint32 card = 1;
+  }
+
+  message LineInfos {
+	uint32 lineNo = 1;
+	double reward = 5;
+	repeated uint32 linePos = 7;
+  }
+
+  
+message TreasureBowlStartReq {
+	uint32 amountIdx = 1;
+	uint32 rateIdx = 2;
+	uint32 autoRound = 3;
+	bool autoFirst = 4;
+	double clientBetValue = 5;
+	bool bgMode = 6;
+	uint32 bgRate = 7;
+  }
+
+  message ClientFreeGameChangerNotify {
+	int32 result = 1;
+	int32 FreeGameSwitch = 2;
+  }
+
+  message TreasureBowlStartRsp {
+	uint32 result = 1;
+	TreasureBowlGameOpenInfo gameDataInfo = 2;
+  }
+
+  message TreasureBowlGameOpenInfo {
+	double playerGold = 1;
+	double finishGold = 2;
+	TreasureBowlStartReq betReq = 3; 
+	TreasureBowlCardInfo card = 4;     
+	string recordId = 5;
+	uint32 gameMode = 6;
+	bool bgMode = 7;
+	repeated double winMultipleArr = 8;
+	double normalWinGold = 9;
+	double bg1WinGold = 10;
+	double bg2WinGold = 11;
+	double afterBetGold = 12;
+  }
+
+  message TreasureBowlCardInfo {
+	uint32 mode = 1;
+	uint32 win = 2;
+	repeated TreasureBowlCardInfoGroup screen = 3;  
+	repeated TreasureBowlCardInfoItem index = 4;  
+	repeated TreasureBowlCardInfoItem listen = 5;  
+  }
+
+  message TreasureBowlCardInfoGroup {
+	repeated TreasureBowlCardInfoItem values = 1; 
+  }
+
+  message TreasureBowlCardInfoItem {
+	repeated uint32 values = 1;
+  }
+
+  message FortuneDragonStartReq {
+	uint32 index = 1;
+	uint32 betRateIdx = 2;
+	uint32 totalRound = 3;
+	uint32 currRound = 4;
+	double clientBetValue = 5;
+	bool openWin = 6;
+  }
+
+  message FortuneDragonStartRsp {
+	uint32 result = 1;
+	FortuneDragonGameOpenInfo gameDataInfo = 2;
+  }
+
+  message FortuneDragonGameOpenInfo {
+	double playerGold = 1;
+	double finishGold = 2;
+	double allOld = 3;
+	FortuneDragonStartReq areaBet = 4;
+	string recordId = 5;
+	uint32 isTing = 6;
+	repeated FortuneDragonCardInfo mainCard = 7;
+	repeated double winMultipleArr = 9;
+  }
+
+  message FortuneDragonCardInfo {
+	repeated uint32 card1 = 1;
+	repeated uint32 card2 = 2;
+	repeated uint32 card3 = 3;
+	repeated uint32 bCard = 4;
+	repeated uint32 indexs = 5;
+	repeated FortuneDragonSettlement linInfo = 6;
+  }
+
+  message FortuneDragonSettlement {
+	uint32 linId = 1;
+	uint32 linCount = 2;
+	uint32 cardId = 3;
+	double rollGold = 4;
+	repeated uint32 linPos = 5;
+	double lineOld = 11;
+	double bMultiple = 12;
+  }
+
+  message DragonTreasure2StartReq {
+	uint32 amountIdx = 1;
+	uint32 rateIdx = 2;
+	uint32 autoRound = 3;
+	bool autoFirst = 4;
+	double clientBetValue = 5;
+  }
+
+  message DragonTreasure2GameOpenInfo {
+	double playerGold = 1;
+	double finishGold = 2;
+	double allOld = 3;
+	DragonTreasure2StartReq areaBet = 4;       
+	string recordId = 5;
+	repeated DragonTreasure2CardInfo mainCard = 6;  
+	bool isFreeGame = 7;
+	bool isTing = 8;
+	repeated double winMultipleArr = 9;
+  }
+
+  
+message DragonTreasure2CardInfo {
+	repeated DragonTreasure2Card col1 = 1;    
+	repeated DragonTreasure2Card col2 = 2;     
+	repeated DragonTreasure2Card col3 = 3;    
+	repeated DragonTreasure2Settlement lineInfo = 4; 
+	repeated uint32 indexs = 5;
+  }
+
+  message DragonTreasure2Settlement {
+	uint32 lineId = 1;
+	repeated uint32 idxs1 = 2;
+	repeated uint32 idxs2 = 3;
+	repeated uint32 idxs3 = 4;
+	uint32 winCardId = 5;
+	double lineGold = 6;
+  }
+
+  message SuperFruitStartReq {
+	TigerAreaBetChip areaBet = 1; 
+	double clientBetValue = 2;
+  }
+
+  message TigerAreaBetChip {
+	uint32 index = 1;
+	uint32 count = 2;
+	uint32 betRateIdx = 3;
+	uint32 betType = 4;
+  }
+
+  message SuperFruitStartRsp {
+	uint32 result = 1;
+	SuperFruitGameOpenInfo gameDataInfo = 2;
+  }
+
+  message SuperFruitGameOpenInfo {
+	TigerAreaBetChip areaBet = 2;
+	string recordId = 4;
+	repeated uint32 patterns = 5;
+	uint32 bonusGameTimes = 7;
+	uint32 trigerBattleGame = 8;
+	FruitBattleInfo fruitBattleInfo = 10;
+	repeated FruitFreeInfo fruitFreeInfo = 12;
+	FruitMainInfo fruitMainInfo = 13;
+	double allFinishGold = 14;
+	int64 currTime = 15;
+	float FreeGameLastGold = 16;
+	double finishGold = 17;
+  }
+
+  message FruitFreeInfo {
+	repeated uint32 patterns = 1;
+	repeated PlayerSettlement settlement = 2;
+	double rollGold = 3;
+	double winMultiple = 4;
+  }
+  
+  message FruitBattleInfo {
+	repeated FruitBattleLevelInfo levelInfos = 1;
+	uint32 currentOpenIndex = 2;
+	repeated uint32 playerOpenIndexs = 3;
+	uint32 finish = 4;
+	repeated uint32 playerHistoryTouches = 5;
+	double rollGold = 6;
+  }
+
+  message FruitBattleLevelInfo {
+	repeated FruitBattleLevelScoreInfo scoreInfos = 1;
+  }
+
+  message FruitBattleLevelScoreInfo {
+	uint32 index = 1;
+	double gold = 2;
+  }
+
+  message FruitMainInfo {
+	repeated uint32 patterns = 1;
+	repeated PlayerSettlement settlement = 2;
+	double rollGold = 3;
+	double winMultiple = 4;
+  }
+
+  message PlayerSettlement {
+	uint32 winningLine = 1;
+	ItemChange item = 2; 
+	repeated uint32 indexs = 3;
+  }
+
+  message ItemChange {
+	uint32 type = 1;
+	double num = 2;
+	double amount = 3;
+	int32 opt = 4;
+	string remark = 5;
+	int32 changeType = 6;
+  }
+
+  message FruitBattleInfoReq {
+	uint32 finishLevel = 1;
+	uint32 finish = 2;
+	uint32 playerTouchIndex = 3;
+  }
+
+  
+message SubtitleBroadcastNotIfyInfo {
+	string roomId = 1;
+	string subtitleStrData = 2;
+  }
+
+  message WaterMarginStartReq {
+	TigerAreaBetChip areaBet = 1;  
+	double clientBetValue = 2;
+  }
+
+  message WaterMarginStartRsp {
+	uint32 result = 1;
+	WaterMarginGameOpenInfo gameDataInfo = 2; 
+  }
+
+  message WaterMarginGameOpenInfo {
+	uint32 status = 1;
+	WaterMarginStartReq areaBet = 2;
+	repeated double betValueList = 3;
+	string recordId = 4;
+	repeated uint32 patterns = 5;
+	uint32 trigerBattleGame = 8;
+	WaterMarginPlayerSettlement settleInfo = 9;
+	AllPatterResult allPatternRes = 10;
+	repeated BattleGameResult battleResults = 11; 
+	uint32 curBattleOpenIndex = 12;
+	uint32 battleFinishAll = 13;
+	uint32 battleLeftCount = 14;
+	double winMultiple = 15;
+  }
+
+  message WaterMarginPlayerSettlement {
+	repeated PlayerSettlement settlement = 1; 
+	uint32 betIndex = 2;
+	uint32 canJoinArena = 3;
+	double rollGold = 4;
+	double allFinishGold = 5;
+  }
+
+  message AllPatterResult {
+	uint32 type = 1;
+	double winRet = 2;
+  }
+
+  message BattleGameResult {
+	repeated BattleGameRoundResult roundResults = 1;
+  }
+
+  message BattleGameRoundResult {
+	Pos2Pattern posInfo = 1;
+	repeated uint32 patterns = 2;
+	bool left3con = 3;
+	bool right3con = 4;
+	bool pattern4con = 5;
+	double winRet = 6;
+	uint32 totalOutRate = 7;
+	uint32 totalInRate = 8;
+  }
+
+  message Pos2Pattern {
+	uint32 pos = 1;
+	uint32 pattern = 2;
+  }
+
+  message SnatchDiamondStartReq {
+	uint32 betLine = 1;
+	double singleScore = 2;
+	double betGold = 3;
+	uint32 betType = 4;
+	double clientBetValue = 5;
+  }
+
+  message SendSnatchDiamondData {
+	uint32 result = 1;
+	SnatchDiamondStartRsp data = 2;
+  }
+
+  message SnatchDiamondStartRsp {
+	uint32 result = 1;
+	double finishGold = 2;
+	string gem = 3;
+	uint32 keyNum = 4;
+	repeated SnatchDiamondGoods keyPT = 5;  
+	uint32 nextKeyNum = 6;
+	OneLevStatus oneLevStatus = 7;
+	repeated double treasureBoxGold = 8;
+	uint32 treasureBoxIndex = 9;
+	uint32 curLev = 10;
+	uint32 nextLev = 11;
+	double betGold = 12;
+	uint32 finishGameTime = 14;
+	double allBet = 15;
+	string recordId = 16;
+	BetType bet = 17;         
+	uint32 roomLev = 18;
+	double winMultiple = 19;
+  }
+
+  message BetType {
+
+  }
+  message SnatchDiamondGoods {
+	uint32 x = 1;
+	uint32 y = 2;
+	uint32 goodsType = 3;
+  }
+
+  message OneLevStatus {
+	repeated SnatchDiamondMulConnected rounds = 1;
+  }
+
+  message SnatchDiamondMulConnected {
+	repeated SnatchDiamondConnected mulConnected = 1;
+  }
+
+  message SnatchDiamondConnected {
+	repeated SnatchDiamondGoods connected = 1;
+	double awardGold = 2;
+  }
+
+  message SuperAceStartReq {
+	uint32 index = 1;
+	uint32 betRateIdx = 2;
+	uint32 totalRound = 3;
+	double clientBetValue = 4;
+  }
+
+  message SuperAceStartRsp {
+	int32 result = 1;
+	SuperAceSpin gameDataInfo = 2;
+  }
+
+  message SuperAceGameInfo {
+	SuperAceSpin gameOpenInfo = 1;
+	uint32 leaveTime = 2;
+	uint32 showTime = 3;
+  }
+
+  message SuperAceSpin {
+	string recordId = 1;
+	uint32 curSpin = 2;
+	uint32 totalSpin = 3;
+	uint32 curRound = 4;
+	uint32 totalRound = 5;
+	uint32 curRoundTimes = 6;
+	uint32 addFreeCount = 7;
+	bool isFree = 8;
+	bool isFinish = 9;
+	SuperAceScreenInfo settle = 10;
+	repeated double winMultipleArr = 11;
+	double finishGold = 12;
+	double playerGold = 13;
+	double multiple = 14;
+	double clientBetValue = 15;
+	double spinReward = 16;
+	SuperAceWild wildPos = 20;
+  }
+
+  message SuperAceScreenInfo {
+	repeated uint32 lineInfo = 1;
+	repeated uint32 indexs = 2;
+	repeated Uint32Array screen = 3;
+	double totalReward = 4;
+  }
+
+  message SuperAceWild {
+	uint32 src = 1;
+	repeated uint32 dst = 2;
+  }
+
+  message CocosRichesGameOpenInfo {
+	double playerGold = 1;
+	double finishGold = 2;
+	double allOld = 3;
+	string recordId = 4;
+	CocosRichesSpin spin = 5;
+
+  }
+
+  message CocosRichesSpin {
+	double finishGold = 1;
+	double allOld = 2;
+	CocosRichesRound round = 3;
+	uint32 scatterNum = 4;
+	repeated uint32 indexs = 5;
+	uint32 subtitleLevel = 6;
+	uint32 totalRoundNum = 8;
+	uint32 curRoundNum = 9;
+	uint32 addFreeGameNum = 10;
+	uint32 surplusFreeGameNum = 11;
+  }
+
+  message CocosRichesRound {
+	double finishGold = 1;
+	double allOld = 2;
+	CocosRichesCardInfo mainCard = 3;
+	uint32 subtitleLevel = 4;
+  }
+
+  message CocosRichesCardInfo {
+	repeated uint32 card1 = 1;
+	repeated uint32 card2 = 2;
+	repeated uint32 card3 = 3;
+	repeated uint32 card4 = 4;
+	repeated uint32 card5 = 5;
+	repeated CocosRichesSettlement settleInfo = 6;
+	repeated uint32 wildPos = 7;
+	double prizeMultiple = 8;
+  }
+
+  message CocosRichesSettlement {
+	repeated uint32 linePos = 1;
+	uint32 cardId = 2;
+	double rollGold = 3;
+  }
+
+  message CocosRichesStartReq {
+	uint32 index = 1;
+	uint32 betRateIdx = 2;
+	uint32 totalRound = 3;
+	double clientBetValue = 4;
+  }
+
+  message CocosRichesGetGameScreenRsp {
+	int32 result = 1;
+	CocosRichesGameOpenInfo gameDataInfo = 2;
+  }
+
+  message FortuneSnakeStartReq {
+	uint32 index = 1;
+	uint32 betRateIdx = 2;
+	uint32 totalRound = 3;
+	uint32 currRound = 4;
+	double clientBetValue = 5;
+	bool openAwardEnhance = 6;
+  }
+
+  message FortuneSnakeStartRsp {
+	uint32 result = 1;
+	FortuneSnakeGameOpenInfo gameDataInfo = 2;
+  }
+
+  message FortuneSnakeGameOpenInfo {
+	double playerGold = 1;
+	double finishGold = 2;
+	double allOld = 3;
+	FortuneSnakeStartReq areaBet = 4;
+	string recordId = 5;
+	uint32 isTing = 6;
+	FortuneSnakeCardInfo mainCard = 7;
+	repeated double winMultipleArr = 8;
+	uint32 tingCardId = 9;
+	uint32 totalRoundNum = 10;
+	uint32 curRoundNum = 11;
+  }
+
+  message FortuneSnakeCardInfo {
+	repeated uint32 card1 = 1;
+	repeated uint32 card2 = 2;
+	repeated uint32 card3 = 3;
+	repeated uint32 indexs = 4;
+	repeated FortuneSnakeSettlement linInfo = 5;
+  }
+
+  message FortuneSnakeSettlement {
+	uint32 linId = 1;
+	uint32 linCount = 2;
+	uint32 cardId = 3;
+	double rollGold = 4;
+	repeated uint32 linPos = 5;
+	double lineOld = 11;
+	double eMultiple = 12;
+  }
+
+  message SuperFruitsGameInfo {
+	SuperFruitsSlot2Spin gameOpenInfo = 1;
+	uint32 leaveTime = 2;
+	uint32 showTime = 3;
+  }
+
+  message SuperFruitsSlot2Spin {
+	string recordId = 1;
+	uint32 curSpin = 2;
+	uint32 totalSpin = 3;
+	uint32 addFreeCount = 4;
+	SuperFruitsSlot2ScreenInfo settle = 5;
+	repeated double winMultipleArr = 6;
+	double finishGold = 7;
+	double playerGold = 8;
+	double multiple = 9;
+	int64 chooseEndTime = 10;
+	int32 choose = 11;
+	double clientBetValue = 12;
+	double normalReward = 13;
+  }
+
+  message SuperFruitsSlot2ScreenInfo {
+	repeated SuperFruitsSlot2LineInfo lineInfo = 1;
+	repeated uint32 indexs = 2;
+	repeated Uint32Array screen = 3;
+	double totalReward = 4;
+  }
+
+  message SuperFruitsSlot2LineInfo {
+	uint32 lineNo = 1;
+	uint32 symbol = 2;
+	uint32 count = 3;
+	double reward = 4;
+	repeated uint32 pos = 5;
+  }
+
+  message SuperFruitsSlot2StartReq {
+	uint32 index = 1;
+	uint32 betRateIdx = 2;
+	uint32 totalRound = 3;
+	double clientBetValue = 4;
+  }
+
+  message SuperFruitsSlot2StartRsp {
+	int32 result = 1;
+	SuperFruitsSlot2Spin gameDataInfo = 2;
+  }
+
+  message QueenOfBountyGameInfo {
+	QueenOfBountyGameOpenInfo gameOpenInfo = 1;
+	uint32 leaveTime = 2;
+	uint32 showTime = 3;
+	bool settled = 4;
+	uint32 curSpinIndex = 5;
+	uint32 curRoundIndex = 6;
+  }
+
+  message WildBountyShowdownGameInfo {
+	WildBountyShowdownGameOpenInfo gameOpenInfo = 1;
+	uint32 leaveTime = 2;
+	uint32 showTime = 3;
+  }

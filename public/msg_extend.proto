@@ -1,0 +1,95 @@
+syntax = "proto3";
+
+package extend;
+
+import "msg_role.proto";
+import "msg_common.proto";
+
+// 登录相关
+enum c_cmd {
+    extend_box_req = 0;
+    extend_box_resp = 1;
+    furious_fish_resp = 2;
+    shoot_weapon_req = 3;
+    shoot_weapon_resp = 4;
+    sync_weapon_resp = 5;
+    sync_room_weapon = 6;
+}
+
+enum msg_extend_code {
+    DEFAULT = 0;
+    SUCCESS = 1;
+    FAIL = 2;
+    UPPER_LIMIT = 3;
+    TYPE_ERROR = 4;
+    NO_WEAPON = 5;
+    ERR_BARBETTE = 6; //炮台不符合规则
+}
+
+
+service msg_extend_service {
+    rpc extend_box (extend_box_req) returns (extend_box_resp); //幸运宝箱消息返回
+    rpc extend_furious (undefined) returns (furious_fish_resp); //狂暴河豚消息返回
+    rpc shoot_weapon (shoot_weapon_req) returns (shoot_weapon_resp); // 发射武器
+    rpc shoot_weapon_sync (undefined) returns (sync_weapon_resp); // 发射武器同步
+    rpc room_weapon_sync (undefined) returns (sync_room_weapon); // 房间武器同步
+}
+
+message extend_box_req {
+}
+
+message extend_box_resp {
+    uint64 uid = 1;
+    uint32 score = 2;
+    uint32 hit_num = 3; // 进度条总额
+    optional uint64 chips = 4;
+    optional uint64 show_chips = 5;
+    optional uint64 delay_chips = 6; //延迟金额
+}
+
+// 狂暴河豚升级
+message furious_fish_resp {
+    uint32 type = 1; // 鱼的类型
+    uint64 id = 2; // 鱼的ID
+    uint32 level = 3; //　鱼等级
+    uint32 fish_rate = 4; //鱼倍率
+    optional uint32 radius = 5; // 影响半径(黑洞)
+    optional uint32 fish_chips = 6; // 可以影响的最大价值鱼(黑洞)
+}
+
+message shoot_weapon_req{
+    uint32 weapon_type = 1; // 武器类型
+    weapon_info weapon = 2; // 武器信息
+}
+
+message shoot_weapon_resp{
+    msg_extend_code code = 1; // 返回发射武器结果
+}
+
+// 同步武器发送
+message sync_weapon_resp{
+    uint64 uid = 1; //用户id
+    uint32 weapon_type = 2; // 武器类型 fishtype
+    weapon_info weapon = 3; // 武器信息
+}
+
+// 房间武器发送
+message sync_room_weapon{
+    uint64 uid = 1; //用户id
+    uint32 weapon_type = 2; // 武器类型 fishtype
+}
+
+message weapon_info{
+    uint64 lifeTime = 1; // 武器生存时间
+    uint64 bulletid = 2; // 子弹id
+    optional float angel = 3; // 电磁炮角度，其他类型武器忽略
+    repeated position bomb = 4; //炸弹位置，无则传空
+    optional uint64 fish_id = 5;       //闪电选中的鱼
+    repeated uint64 related_fish = 6; // 闪电被关联的鱼，其他类型无则传空
+}
+// 坐标
+message position{
+    float x = 1;
+    float y = 2;
+    optional float angel = 3; // 炸弹角度
+}

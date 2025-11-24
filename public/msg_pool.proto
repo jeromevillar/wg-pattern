@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package pool;
+
+import "msg_common.proto";
+
+enum c_cmd {
+    DEFAULT = 0;
+    bcast_jp_resp = 1;
+    amount_jp_resp = 2;
+}
+
+service msg_pool_service {
+    rpc broadcast_jp_req (undefined) returns (bcast_jp_resp); //奖信息
+    rpc amount_jp_req (undefined) returns (amount_jp_resp); //奖池数额
+}
+
+// 广播jp奖池信息
+message amount_jp_resp {
+    uint64 amount = 1; // 广播数额
+}
+
+// jp广播内容
+message bcast_jp_resp {
+    uint64 uid = 1;
+    uint64 score = 2;
+    uint32 score_level = 3;
+    dmsg content = 4; //空为不广播
+    uint64 amount = 5; // 广播数额
+}

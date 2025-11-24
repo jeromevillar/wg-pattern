@@ -1,0 +1,771 @@
+syntax = "proto3";
+
+package act;
+
+import "msg_common.proto";
+
+// 活动
+enum c_cmd {
+    act_default = 0;
+    act_list_req = 1;
+    act_list_resp = 2;
+    act_detail_info_req = 3;
+    act_detail_info_resp = 4;
+    red_bag_exchange_info_req = 5;
+    red_bag_exchange_info_resp = 6;
+    red_bag_exchange_req = 7;
+    red_bag_exchange_resp = 8;
+    red_bag_num_resp = 9;
+    red_bag_add_resp = 10;
+    act_code_resp = 11;
+    world_cup_rank_reward_req = 12;
+    world_cup_rank_reward_resp = 13;
+    world_cup_reward_notice_resp = 14;
+    world_cup_role_reward_req = 15;
+    world_cup_role_reward_resp = 16;
+    world_cup_notice_resp = 17;
+    valentine_notice_resp = 18;
+    nation_race_day_req = 19;
+    nation_race_day_resp = 20;
+    nation_race_info_req = 21;
+    nation_race_info_resp = 22;
+    nation_race_over_req = 23;
+    nation_race_sign_resp = 24;
+    nation_race_over_resp = 25;
+    nation_day_notice_resp = 26;
+    nation_volume_add_resp = 27;
+    nation_day_reward_resp = 28;
+    yuandan_daily_req = 29;
+    yuandan_daily_resp = 30;
+    yuandan_daily_reward_req = 31;
+    yuandan_daily_reward_resp = 32;
+    yuandan_notice_resp = 33;
+    yuandan_reward_notice_resp = 34;
+    act_hint_notice_resp = 35;
+    monster_hp_req = 36;
+    monster_hp_resp = 37;
+    monster_pool_req = 38;
+    monster_pool_resp = 39;
+    monster_hp_info_resp = 40;
+    monster_dead_resp = 41;
+    new_task_notice_resp = 42;
+    task_finish_notice_resp = 43;
+    task_detail_req = 44;
+    task_detail_resp = 45;
+    act_pop_up_resp = 46;
+    period_race_history_req = 47;
+    period_race_history_resp = 48;
+    leading_award_notice_resp = 49;
+    act_processes_req = 50;
+    act_processes_resp = 51;
+    act_daily_notice_resp = 52;
+    mid_autumn_role_data_req = 53;
+    mid_autumn_role_data_resp = 54;
+    mid_autumn_exchange_req = 55;
+    mid_autumn_exchange_resp = 56;
+    mid_autumn_drop_resp = 57;
+}
+
+service msg_act_service {
+    rpc act_list (act_list_req) returns (act_list_resp); // 推送活动列表
+    rpc act_detail_info (act_detail_info_req) returns (act_detail_info_resp); // 请求活动详细信息
+    rpc act_code (undefined) returns (act_code_resp); // 错误码
+  // 红包活动
+    rpc red_bag_exchange_info (red_bag_exchange_info_req) returns (red_bag_exchange_info_resp); // 兑换详情请求
+    rpc red_bag_exchange (red_bag_exchange_req) returns (red_bag_exchange_resp); // 兑换请求
+    rpc red_bag_num (undefined) returns (red_bag_num_resp); // 推送红包数量-活动期间进入房间之后主动推送
+    rpc red_bag_add (undefined) returns (red_bag_add_resp); // 推送增加红包-活动期间打鱼之后主动推送
+  // 世界杯活动
+    rpc world_cup_rank_reward (world_cup_rank_reward_req) returns (world_cup_rank_reward_resp); // 世界杯活动-排名奖励榜单
+    rpc world_cup_reward_notice (undefined) returns (world_cup_reward_notice_resp); // 世界杯活动-推送奖励通知
+    rpc world_cup_role_reward (world_cup_role_reward_req) returns (world_cup_role_reward_resp); // 世界杯活动-角色奖励信息
+    rpc world_cup_notice (undefined) returns (world_cup_notice_resp); // 世界杯活动-推送活动
+  // 情人节活动
+    rpc valentine_notice (undefined) returns (valentine_notice_resp); // 情人节活动-活动每日首次登录通知
+  //国庆活动
+    rpc nation_volume_add(undefined) returns (nation_volume_add_resp); //推送增加参赛卷-活动期间打鱼之后主动推送
+    rpc nation_race_day (nation_race_day_req) returns (nation_race_day_resp); //国庆活动-活动列表
+    rpc nation_race_info (nation_race_info_req) returns (nation_race_info_resp); //国庆活动-活动赛事详细信息
+    rpc nation_race_over (nation_race_over_req) returns (nation_race_over_resp); // 国庆活动-活动赛事玩家请求结算
+    rpc nation_race_over_sign (undefined) returns (nation_race_sign_resp); // 推送当前赛场中个人子弹和筹码
+    rpc nation_day_notice (undefined) returns (nation_day_notice_resp); // 国庆节活动-活动每日首次登录通知
+    rpc nation_role_reward (undefined) returns (nation_day_reward_resp); // 国庆节活动-奖励信息通知
+  // 双旦活动
+    rpc yuandan_daily (yuandan_daily_req) returns (yuandan_daily_resp); // 请求每日信息
+    rpc yuandan_daily_reward (yuandan_daily_reward_req) returns (yuandan_daily_reward_resp); // 领取每日任务奖励
+    rpc yuandan_notice (undefined) returns (yuandan_notice_resp); // 推送活动
+    rpc yuandan_reward_notice (undefined) returns (yuandan_reward_notice_resp); // 推送活动奖励
+  // 通用飘字提示
+    rpc act_hint_notice (undefined) returns (act_hint_notice_resp);
+    // 通用弹框提示
+    rpc act_pop_up (undefined) returns (act_pop_up_resp);
+    rpc act_processes (act_processes_req) returns (act_processes_resp); // 进度通知
+  // 活动每日推送
+    rpc act_daily_notice (undefined) returns (act_daily_notice_resp);
+    // 任务活动
+    rpc new_task_notice (undefined) returns (new_task_notice_resp); // 通知有新任务
+    rpc task_finish_notice (undefined) returns (task_finish_notice_resp); // 通知任务完成
+    rpc task_detail (task_detail_req) returns (task_detail_resp); // 任务详情
+  // 周期赛事
+    rpc period_race_history (period_race_history_req) returns (period_race_history_resp); // 请求历史记录
+  // 龍头奖活动
+    rpc leading_award_notice (undefined) returns (leading_award_notice_resp); // 龍头奖活动-奖励信息通知
+  // 中秋活动
+    rpc mid_autumn_role_data (mid_autumn_role_data_req) returns (mid_autumn_role_data_resp); //中秋活动-主界面活动信息
+    rpc mid_autumn_exchange (mid_autumn_exchange_req) returns (mid_autumn_exchange_resp); // 中秋活动-兑换操作
+    rpc mid_autumn_drop (undefined) returns (mid_autumn_drop_resp); // 中秋活动-道具操作
+}
+
+enum act_code {
+    DEFAULT = 0;
+    SUCCESS = 1; // 成功
+    FAIL = 2; // 失败
+    UNDEFINED = 3; // 活动不存在
+    HAS_GET_REWARD = 4; // 已经领取过了
+    NO_THIS_REWARD = 5; // 没有该奖励
+    CAN_NOT_GET = 6; // 还没达到领取条件
+    MAX_TIMES = 7; // 已达到最大次数了
+    TREASURE_NO_NUM = 8; // 当前没有免费次数
+    NO_ENOUGH_SCORE = 9; // 没有足够的积分
+    NO_INDEX = 10; // 索引出错
+    NOT_BETWEEN_TIME = 11; // 不在时间范围内
+    NO_ENOUGH_PIECE = 12; // 红包碎片不足
+}
+
+// 请求活动列表
+message act_list_req {
+}
+
+// 活动列表
+message act_list_resp {
+    repeated act_info info = 1;
+}
+
+// 活动详情信息
+message act_info {
+    uint64 uid = 1; // 活动id
+    uint32 type = 2; // 活动类型
+    uint32 pos = 3; // 排序
+    uint32 show_start_time = 4; // 显示开始时间
+    uint32 show_end_time = 5; // 显示活动结束时间
+    uint32 start_time = 6; // 活动开始时间
+    uint32 end_time = 7; // 活动结束时间
+    optional uint32 real_end_time = 8; // 活动真实结束时间(大奖赛）
+}
+
+// 活动请求错误返回
+message act_code_resp {
+    act_code code = 1;
+}
+
+// 活动详情请求
+message act_detail_info_req {
+    uint64 uid = 1; // 活动id
+}
+
+// 活动详情返回
+message act_detail_info_resp {
+    uint64 uid = 1; // 活动id
+    uint32 exchange_start_time = 2; // (特定活动)阶段开始时间
+    uint32 exchange_end_time = 3; // (特定活动)阶段结束时间
+    string name = 4; // 活动名称(世界杯活动中用于昨日幸运榜单标题)
+    string content = 5; // 内容(世界杯活动中用于昨日幸运榜单详情说明)
+    string content2 = 6; // 内容详情
+    optional red_bag_info red_bag = 7; // 活动类型1-击杀获得红包
+    optional world_cup_info world_cup = 8; // 活动类型2-世界杯活动
+    optional nation_day_info nation_day = 9; // 活动类型5-国庆活动
+    optional yuandan_info yuandan = 10; // 活动类型6-双旦活动
+    optional monster_info monster = 11; // 活动类型9-世界BOSS（魔法王者）活动
+    optional task_info task = 12; // 活动类型20001-任务活动
+    optional period_race_info period_race = 13; // 活动类型20003-周期赛活动
+    optional leading_award_info leading_award = 14; //活动类型20002-龍头奖
+}
+
+// 红包-兑换详情请求
+message red_bag_exchange_info_req {
+    uint64 uid = 1; // 活动id
+}
+
+// 红包-兑换详情返回
+message red_bag_exchange_info_resp {
+    uint64 uid = 1; // 活动id
+    red_bag_exchange_info info = 2;
+}
+
+// 红包-兑换请求
+message red_bag_exchange_req {
+    uint64 uid = 1; // 活动id
+    uint32 need = 2; // 兑换红包id
+    optional bool is_batch = 3; // 是否批量兑换(true是)
+}
+
+// 红包-兑换结果
+message red_bag_exchange_resp {
+    uint64 uid = 1; // 活动id
+    repeated uint64 chips = 2; // 红包获得筹码
+    uint32 red_bag = 3; // 累计红包数量
+    uint32 red_bag_exist = 4; // 可兑换红包数量
+    repeated red_bag_exchange_record record_list = 5; // 其他人兑换记录列表
+}
+
+// 红包-推送红包数量(游戏里）
+message red_bag_num_resp {
+    uint64 uid = 1; // 活动id
+    uint32 red_bag = 2; // 累计红包数量
+    uint32 red_bag_exist = 3; // 可兑换红包数量
+}
+
+// 红包-推送增加红包
+message red_bag_add_resp {
+    uint64 uid = 1; // 用户id
+    uint64 act_uid = 2; // 活动id
+    uint32 red_bag = 3; // 增加红包数量
+}
+
+// 红包-活动详情
+message red_bag_info {
+    uint32 red_bag = 1; // 累计红包数量
+    uint32 red_bag_exist = 2; // 可兑换红包数量
+    uint64 red_bag_exge_chips = 3; //已兑换红包奖金
+    uint32 rank = 4; // 排名
+    uint64 rank_chips = 5; // 排行奖金
+    repeated red_bag_rank_info rank_list = 6;
+}
+
+// 红包-排行榜
+message red_bag_rank_info {
+    string nickname = 1; // 昵称
+    uint32 red_bag = 2; // 红包
+    uint64 chips = 3; // 金币
+}
+
+// 红包-兑换详情
+message red_bag_exchange_info {
+    uint32 red_bag = 1; // 累计红包数量
+    uint32 red_bag_exist = 2; // 可兑换红包数量
+    repeated red_bag_exchange_setting settings = 3; // 兑换配置
+    repeated red_bag_exchange_record record_list = 4; // 其他人兑换记录列表
+}
+
+// 红包-兑换配置
+message red_bag_exchange_setting {
+    string name = 1; // 红包名称
+    uint32 need = 2; // 红包id
+    uint32 min = 3; // 兑换金额范围-最小值
+    uint32 max = 4; // 兑换金额范围-最小值
+    optional uint32 per_need_num = 5; // 兑换单个红包需要的碎片数量
+    optional uint32 batch_num = 6; // 批量兑换的红包数量
+}
+
+// 红包-兑换记录
+message red_bag_exchange_record {
+    optional string nickname = 1; // 昵称
+    uint32 red_bag = 2; // 红包数量
+    uint64 chips = 3; // 金币
+    uint32 time = 4; // 时间
+}
+
+// 世界杯活动-活动界面信息
+message world_cup_info {
+    uint32 self_rank = 1; // 角色排名
+    uint64 self_score = 2; // 角色累计积分
+    repeated world_cup_rank_info rank_list = 3; // 幸运排行榜单
+    uint32 self_daily_rank = 4; // 角色每日排名(当日)
+}
+
+// 世界杯活动-幸运榜单
+message world_cup_rank_info {
+    uint32 rank = 1; // 排名
+    uint64 chips = 2; // 奖励金
+    string nickname = 3; // 昵称
+}
+
+// 世界杯活动-奖励配置信息
+message world_cup_reward_info {
+    uint32 rank = 1; // 排名
+    uint64 chips = 2; // 奖励金
+    optional uint32 max_rank = 3; // 最高排名（用于表示排名范围）
+}
+
+// 世界杯活动-奖励配置请求
+message world_cup_rank_reward_req {
+    uint64 act_uid = 1; // 活动id
+}
+
+// 世界杯活动-奖励配置返回
+message world_cup_rank_reward_resp {
+    repeated world_cup_reward_info luck_rewards = 1; // 幸运排名奖励
+    repeated world_cup_reward_info rewards = 2; // 排名奖励
+    repeated world_cup_reward_info daily_rewards = 3; // 排名奖励
+}
+
+// 世界杯活动-推送奖励通知
+message world_cup_reward_notice_resp {
+    uint64 act_uid = 1; // 活动id
+    world_cup_reward_info reward = 2; // 奖励
+    uint32 type = 3; // 奖励类型 1幸运 2总排行 3日排行
+}
+
+message world_cup_history_reward_info {
+    uint64 time = 1; // 时间戳(秒)
+    uint32 rank = 2; // 排名
+    uint64 chips = 3; // 奖励金
+    uint32 type = 4; // 类型（1幸运排行;2最终总排行;3日排行）
+}
+
+// 世界杯活动-角色奖励信息请求
+message world_cup_role_reward_req {
+    uint64 act_uid = 1; // 活动id
+}
+
+// 世界杯活动-角色奖励信息返回
+message world_cup_role_reward_resp {
+    repeated world_cup_history_reward_info rewards = 1; // 奖励
+}
+
+// 世界杯活动-推送活动
+message world_cup_notice_resp {
+}
+// 情人节每日推送
+message valentine_notice_resp {
+}
+
+// 国庆节每日推送
+message nation_day_notice_resp {
+    uint64 show_start_time = 1; // 显示开始时间
+    uint64 show_end_time = 2; // 显示活动结束时间
+    uint64 start_time = 3; // 活动开始时间
+    uint64 end_time = 4; // 活动结束时间
+}
+
+// 国庆卷-推送增加参赛卷
+message nation_volume_add_resp {
+    uint64 uid = 1; // 用户id
+    uint64 act_uid = 2; // 活动id
+    uint64 add_volume = 3; // 增加奖卷
+    uint64 self_volume = 4; // 角色剩余奖卷
+    uint64 daily_volume = 5; // 角色当日奖卷
+}
+
+// 国庆活动-活动界面信息
+message nation_day_info {
+    uint32 self_rank = 1; // 角色排名
+    uint64 self_volume = 2; // 角色剩余奖卷
+    uint64 daily_volume = 3; // 角色当日奖卷
+    uint32 self_daily_rank = 4; // 角色每日排名(当日)
+}
+
+// 国庆活动-赛事列表请求
+message nation_race_day_req {
+    uint64 uid = 1; // 活动id
+}
+// 国庆活动-赛事列表返回
+message nation_race_day_resp {
+    repeated nation_race race = 1;
+    uint32 day = 2; // 第几天
+}
+message nation_race {
+    uint32 race_id = 1; //赛id
+    uint64 show_start_time = 2; // 赛事显示开始时间
+    uint64 show_end_time = 3; // 赛事显示结束时间
+    uint64 start_time = 4; // 赛事开始时间
+    uint64 end_time = 5; // 赛事结束时间
+    uint64 forbidden_time = 6; //赛事禁止报名时间
+    string race_name = 7; //赛事名称
+    uint32 event_type_id = 8; //赛事类型 1-4
+}
+
+// 大奖赛请求详细信息
+message nation_race_info_req {
+    uint64 uid = 1; // 活动id
+    uint32 race_id = 2; // 国庆赛事id
+}
+
+message nation_race_info_resp {
+    uint32 bullet_count = 1;
+    uint32 entry_fee = 2;
+    uint32 retry_fee = 3;
+    uint32 bullet_left = 4;
+    uint32 rank = 5;
+    uint32 chances = 6;
+    repeated nation_day_reward_info rewards = 7;
+}
+
+// 国庆活动-奖励配置信息
+message nation_day_reward_info {
+    uint32 rank = 1; // 排名
+    uint64 chips = 2; // 奖励金
+    optional uint32 max_rank = 3; // 最高排名（用于表示排名范围）example: rank 为1 max_rank为3 表示 1-3名
+}
+
+message nation_race_over_req{
+    uint64 uid = 1; // 活动id
+    uint32 race_id = 2; // 国庆赛事id
+}
+
+// 客户端请求国庆赛事结算,如未结束返回此协议纠正数据
+message nation_race_sign_resp{
+    uint64 jettonshow = 7; // 显示的筹码
+    uint32 bulletleft = 8; //子弹剩余
+}
+// 客户端请求赛事结算,如结束返回此协议
+message nation_race_over_resp {
+    uint32 high_point = 1; //历史最高分数
+    uint32 self_rank = 2;
+    uint32 self_point = 3; //当前分数
+    bool game_over = 4;
+    uint32 retry_fee = 5; //重复尝试费用
+}
+
+// 国庆活动-推送奖励通知
+message nation_day_reward_resp {
+    uint64 uid = 1; // 活动id
+    uint64 time = 2; // 时间戳(秒)
+    uint32 rank = 3; // 排名
+    uint64 chips = 4; // 奖励金
+    uint32 type = 5; // // 奖励类型 1日排行 2赛事榜
+    uint32 day = 6; // 活动第几天
+    optional uint64 race_id = 7; // 赛事id
+    optional uint64 start_time = 8; // 赛事开始时间
+    optional string race_name = 9; //赛事名称
+    optional uint32 event_type_id = 10; //赛事类型
+}
+
+// 双旦活动-活动界面信息(配置)
+message yuandan_info {
+    repeated yuandan_task_info tasks_conf = 1; // 每日任务信息
+    repeated yuandan_rank_info rank_conf = 2; // 排行奖励
+}
+
+// 双旦活动-任务配置
+message yuandan_task_info {
+    uint32 task_id = 1; // 任务id
+    uint64 need_exp = 2; // 达成需求经验值
+    uint64 award_chips = 3; // 奖励金币值
+    uint64 award_score = 4; // 奖励积分值
+    uint32 max = 5; // 最大领取份数
+}
+
+// 双旦活动-排行配置
+message yuandan_rank_info {
+    uint32 rank = 1; // 排名
+    uint64 chips = 2; // 奖励金
+    optional uint32 max_rank = 3; // 最高排名（用于表示排名范围）
+}
+
+// 双旦活动-请求每日信息
+message yuandan_daily_req {
+    uint64 uid = 1; // 活动id
+}
+
+// 双旦活动-返回每日信息
+message yuandan_daily_resp {
+    uint64 uid = 1; // 活动id
+    uint64 exp = 2; // 当日已达成经验值
+    repeated yuandan_role_task_info tasks = 3; // 玩家每日任务信息
+}
+
+// 双旦活动-角色每日任务信息
+message yuandan_role_task_info {
+    uint32 task_id = 1; // 任务id
+    uint32 num = 2; // 已被领取领取份数
+    uint32 award_state = 3; // 领取状态： 0未达成 1达成可领取 2已领取 3达成不可领取
+}
+
+// 双旦活动-领取每日任务奖励
+message yuandan_daily_reward_req {
+    uint64 uid = 1; // 活动id
+    uint32 task_id = 2; // 任务id
+}
+
+// 双旦活动-返回领取每日任务奖励
+message yuandan_daily_reward_resp {
+    uint64 uid = 1; // 活动id
+    uint32 task_id = 2; // 任务id
+    uint32 code = 3; // 领取结果： 0失败(未达成) 1成功领取 2已领取 3达成不可领取
+}
+
+// 双旦活动-每日推送
+message yuandan_notice_resp {
+}
+
+// 双旦活动-奖励推送
+message yuandan_reward_notice_resp {
+    uint64 act_uid = 1; // 活动id
+    uint32 type = 2; // 奖励类型 1排行奖励 2每日任务奖励
+    uint64 chips = 3; // 奖励金
+    optional uint32 rank = 4; // 排名
+}
+
+// 飘字提示
+message act_hint_notice_resp {
+    optional string content = 1; // 飘字内容（富文本）
+    optional uint32 type = 2; // 活动类型id
+    optional dmsg content2 = 3; // 飘字内容（富文本）多语言
+}
+
+// 弹窗提示
+message act_pop_up_resp {
+    uint32 type = 1; // 类型 1-文本 2-规定格式
+    uint32 act_type = 2; // 活动类型
+    optional string content = 3; // 文本(当类型为1)
+    optional uint32 content_id = 4; // 规定文本id(当类型为2)
+    repeated content_args args = 5; // 规定文本参数(当类型为2)
+}
+
+message content_args {
+    uint32 type = 1; // 类型 1-文本 2-数值
+    optional string content = 2; // 文本(当类型为1)
+    optional uint64 value = 3; // 数值(当类型为2)
+}
+
+// 活动每个阶段进度请求
+message act_processes_req {
+    uint64 act_uid = 1; // 活动id
+}
+
+// 活动每个阶段进度返回
+message act_processes_resp {
+    uint64 act_uid = 1; // 活动id
+    uint64 show_time = 2; // 阶段展示时间
+    uint64 start_time = 3; // 阶段开始时间
+    uint64 end_time = 4; // 阶段结束时间
+}
+
+// 活动每日推送
+message act_daily_notice_resp {
+    uint64 act_uid = 1; // 活动id
+    uint32 type = 2; // 活动类型
+}
+
+// 世界BOSS（魔法王者）活动
+message monster_info {
+    uint64 max_hp = 1; // 最大血量
+    uint64 hp = 2; // 当前血量
+    uint64 pool_chips = 3; // 活动奖池
+    uint32 last_hit_award = 4; // 最后一击奖励比例（整数,放大10000, 例如0.01 对应 100）
+    repeated monster_rank_info rank_award = 5; // 排名奖励列表
+}
+
+// 世界BOSS（魔法王者）活动-排行奖励配置
+message monster_rank_info {
+    uint32 rank = 1; // 排名
+    uint32 award = 2; // 奖励比例（整数,放大10000, 例如0.01 对应 100）
+    optional uint32 max_rank = 3; // 最高排名（用于表示排名范围）
+}
+
+// 世界BOSS（魔法王者）活动 - BOSS血量
+message monster_hp_req {
+    uint64 act_uid = 1; // 活动id
+}
+
+message monster_hp_resp {
+    uint64 act_uid = 1; // 活动id
+    uint64 max_hp = 2; // 最大血量
+    uint64 hp = 3; // 当前血量
+    repeated act_monster monster_list = 4; // 小怪列表
+}
+
+message act_monster {
+    uint64 uid = 1; // 怪物id
+    uint64 max_hp = 2; // 最大血量
+    uint64 hp = 3; // 当前血量
+}
+
+// 世界BOSS（魔法王者）活动 - 奖池金额
+message monster_pool_req {
+    uint64 act_uid = 1; // 活动id
+}
+
+// 世界BOSS（魔法王者）活动 - 奖池金额
+message monster_pool_resp {
+    uint64 act_uid = 1; // 活动id
+    uint64 pool_chips = 2; // 活动奖池
+}
+
+// 世界BOSS（魔法王者）活动 - 血量预警
+message monster_hp_info_resp {
+    uint64 act_uid = 1; // 活动id
+    uint32 hp_percent = 2; // 血量百分比
+}
+
+// 世界BOSS（魔法王者）活动 - 结算面板
+message monster_dead_resp {
+    uint64 act_uid = 1; // 活动id
+    uint32 rank = 2; // 排名
+    uint64 damage = 3; // 伤害值
+    uint64 award = 4; // 排名奖励
+    uint64 last_hit_award = 5; // 最后一击奖励
+    uint32 award_rate = 6; // 排名奖励比例
+    uint32 last_hit_award_rate = 7; // 最后一击奖励比例
+    repeated act_rank_info rank_list = 8; // 排行榜单
+}
+
+// 排行信息
+message act_rank_info {
+    string nickname = 1; // 昵称
+    uint64 score = 2; // 金币
+    optional uint64 chips = 3; // 奖励金
+    optional uint32 rank = 4; // 排名(非连续排名的需要指明排名)
+}
+
+// 任务活动面板信息
+message task_info {
+    uint32 id = 1; // 任务id
+    uint64 process = 2; // 进度
+    uint64 max = 3; // 目标值
+    uint32 reward_num = 4; // 剩余可领取奖励数量
+    uint32 self_rank = 5; // 角色排名(0表示未上榜)
+    uint64 self_award = 6; // 角色排名奖励(0表示无奖励)
+    repeated act_rank_info rank_list = 7; // 排名奖励 (按照发送顺序，排名从高到低)
+    optional uint32 state = 8; // 任务状态 0-进行中 1-已完成 2-奖励已领取完
+    optional uint32 task_type = 9; // 任务类型（金额类型的任务需要转换显示格式）
+}
+
+// 新任务通知
+message new_task_notice_resp {
+}
+
+// 任务完成通知(有奖励才通知)
+message task_finish_notice_resp{
+    uint32 id = 1; // 任务id
+    uint64 award = 2; // 角色排名奖励
+}
+
+// 任务详情 请求
+message task_detail_req {
+    uint64 uid = 1; // 活动id
+}
+
+// 任务详情 返回
+message task_detail_resp {
+    uint64 uid = 1; // 活动id
+    repeated task_detail_info tasks = 2; // 任务
+}
+
+message task_detail_info {
+    string content = 1; // 任务内容
+    uint64 score = 2; // 积分值
+    double target = 3; // 任务目标值
+    double process = 4; // 任务当前进度
+    uint64 done = 5; // 任务已完成次数
+}
+
+// 周期赛事信息
+message period_race_info {
+    repeated periad_race_type_info info = 1; // 各赛事信息
+}
+
+message periad_race_type_info {
+    uint32 type = 1; // 赛事类型(1-小时赛)
+    uint32 start_time = 2; // 本阶段赛事开始时间
+    uint32 close_time = 3; // 本阶段赛事结束时间
+    uint32 rank = 4; // 角色排名(0表示未上榜)
+    uint64 score = 5; // 角色排行值
+}
+
+// 周期赛事历史记录
+message period_race_history_req {
+    uint64 uid = 1; // 活动id
+}
+
+message period_race_history_resp {
+    uint64 uid = 1; // 活动id
+    repeated period_race_history history = 2; // 历史奖励记录
+}
+
+message period_race_history {
+    uint32 t = 1; // 奖励时间戳
+    uint32 rank = 2; // 排名
+    uint64 award = 3; // 奖励
+}
+
+// 冲级龍头奖活动面板信息
+message leading_award_info {
+    uint32 id = 1; // 任务id
+    uint64 exp = 2; // 当前等级经验
+    uint64 max_exp = 3; // 目标经验
+    uint32 reward = 4; // 目标奖励
+    uint32 reward_num = 5; // 剩余可领取奖励数量
+    uint32 total_reward_num = 6; // 总奖励数量
+    uint32 self_rank = 7; // 角色排名(0表示未上榜)
+    uint64 total_award = 8; // 角色累计领取奖励(0表示无奖励)
+    repeated leading_reward_info rank_list = 9; // 排名奖励 (按照发送顺序，排名从高到低)
+    repeated leading_award_brief brief = 10; // 龍头奖当前奖励信息
+    optional bool state = 11; // 任务状态 true-进行中,已完成 false-奖励已领取完
+}
+
+// 排行信息
+message leading_award_brief {
+    uint64 id = 1;  // 龙头奖编号
+    uint64 exp = 2; // 经验
+    uint64 reward = 3; // 奖金
+    optional uint32 reward_num = 4; // 剩余可领取奖励数量
+    optional uint32 total_reward_num = 5; // 总奖励数量
+    optional uint32 award_sign = 6; // 个人领取状态 1: 成功获取  2: 没有抢到奖励 3: 还未完成任务
+}
+
+message leading_award_notice_resp{
+    uint64 act_uid = 1; // 活动id
+    uint64 chips = 2; // 奖励金
+    optional uint32 rank = 3; // 排名
+}
+
+message leading_reward_info {
+    uint32 start_rank = 1; // 排名
+    uint32 end_rank = 2; // 排名
+    uint64 chips = 3; // 奖励金
+}
+
+// 中秋活动-时间信息
+message mid_autumn_time{
+    uint64 act_start = 1; // 距离活动开始
+    uint64 act_end = 2; // 距离活动结束
+}
+
+// 中秋活动-兑换说明
+message mid_autumn_exchange_desc{
+    uint32 rank_id = 1; // 奖励等级id
+    uint32 exchange_limit = 2; // 兑换数量限制
+    uint32 prop_id = 3; // 兑换所需道具id
+    uint32 prop_num = 4; // 兑换所需道具数量
+    uint32 min = 5; //浮动最小值
+    uint32 max = 6; //浮动最大值
+}
+
+// 中秋活动-用户道具数
+message each_rank_prop_num{
+    uint32 prop_id = 1; //道具id
+    uint32 prop_num = 2; //道具数量
+};
+
+// 中秋活动-主界面用户信息
+message mid_autumn_role_data_req{
+}
+
+message mid_autumn_role_data_resp{
+    mid_autumn_time time_data = 1; //时间信息
+    repeated mid_autumn_exchange_desc exchange_desc = 2; //兑换配置
+    repeated each_rank_prop_num role_prop = 3; //用户道具
+    string info = 4;
+}
+
+// 中秋活动-兑换操作
+message mid_autumn_exchange_req{
+    uint32 rank_id = 1; //兑换挡位Id
+    uint32 exchange_num = 2; //兑换数量
+}
+
+message mid_autumn_exchange_resp{
+    repeated uint32 exchange_amount = 1; // 兑换金额
+    optional uint32 exchange_num = 2; // 兑换数量
+    bool status = 3; //兑换状态
+    optional string reason = 4; //兑换失败原因
+}
+
+// 中秋活动-道具操作
+message mid_autumn_drop_resp{
+    uint32 drop_id = 1;     // 道具id
+    uint32 drop_num = 2;    // 道具数量
+    uint32 fish_id = 3;     // 鱼id
+}

@@ -1,0 +1,86 @@
+syntax = "proto3";
+
+package boss;
+
+// 房间相关,包括战斗消息和获奖消息
+import "msg_role.proto";
+
+enum c_cmd {
+    default = 0;
+    boss_ready_resp = 1;
+    boss_level_resp = 2;
+    boss_box_req = 3;
+    boss_box_resp = 4;
+    boss_code_resp = 8;
+    update_box_chips_resp = 11;
+}
+
+service msg_boss_service {
+    rpc boss_notice(undefined) returns (boss_ready_resp); //boss通知
+    rpc boss_level(undefined) returns (boss_level_resp); //boss进度信息初始化
+    rpc boss_process(boss_box_req) returns (undefined); //boss进度请求
+    rpc boss_box_process(undefined) returns (boss_box_resp); //boss进度
+    rpc update_box_chips (undefined) returns (update_box_chips_resp); //增加筹码
+}
+
+enum boss_code {
+    DEFAULT = 0;
+    SUCCESS = 1; // 成功
+    FAIL = 2; // 失败
+    UNDEFINED = 3; // boss不存在
+    NOT_BETWEEN_TIME = 4; // boss不在时间范围内
+}
+
+message boss_info {
+    uint64 boss_id = 1; //boss id
+    uint32 fish_type = 2; //鱼类型
+    room_type type = 3;
+    uint32 ready_time = 4; //准备提示时间
+    uint32 start_time = 5; //开始时间
+    uint32 deadline = 6;  //倒计时时间点
+    uint32 end_time = 7;  //结束时间
+}
+
+// 活动请求错误返回
+message boss_code_resp {
+    boss_code code = 1;
+}
+
+// boss通知
+message boss_ready_resp {
+    boss_info boss = 1;
+}
+
+// boss赛宝箱进度返回
+message boss_level_resp {
+    repeated boss_level_info info = 1;
+}
+
+// boss赛宝箱进度信息
+message boss_level_info {
+    uint32 level = 1; // 等级
+    uint64 score = 2; // 积分
+}
+
+// boss赛宝箱进度请求
+message boss_box_req {
+    room_type type = 1; //房间类型
+    uint64 boss_id = 2; // boss id
+}
+
+// boss赛宝箱进度返回
+message boss_box_resp {
+    uint64 score = 1; //积分
+    uint64 chip = 2; //打劫宝藏
+    uint32 level = 3; //宝箱等级
+    uint64 award = 4; //每个宝箱的奖励
+}
+
+//更新玩家的筹码
+message update_box_chips_resp {
+    uint64 uid = 1;
+    int64 chips = 2; // 新增筹码数
+    uint64 jettonshow = 3; // 子弹倍数,和类型一起确定子弹显示形态
+    uint64 bulletid = 4; // 子弹id
+    optional uint64 delay_chips = 5; //延迟金额
+}
