@@ -5,7 +5,7 @@ const path = require("path");
 const { v4: uuidv4 } = require('uuid');
 const {getLaunchUrl} = require("../utils/launchGame");
 const {loadProto} = require("../utils/proto");
-const {delay, startPing, stopPing, sendMessage, receiveMessage, sendClientLoginReq, sendDivisionActivityReq, sendSpinCocosRichesStartReq, saveSpin} = require("../utils/common");
+const {delay, startPing, stopPing, sendMessage, receiveMessage, sendClientLoginReq, sendDivisionActivityReq, sendSpinCocosRichesStartReq, saveSpin1, sendSpinCocosRichesGetGameScreenReq} = require("../utils/common");
 
 const PROTO_PATH = path.join(__dirname, "../utils/com_protocol.proto");
 
@@ -14,8 +14,11 @@ const gameCode = "cocosriches";
 const minChip = 0.2;
 
 let sendSpinCmd = 12011;
+let sendSubSpinCmd = 12013;
 let sendSpinRoute = "com_protocol.CocosRichesStartReq";
-let receiveSpinRoute = "com_protocol.CocosRichesGetGameScreenRsp";
+let receiveSpinRoute = "com_protocol.CocosRichesStartRsp";
+let sendSubSpinRoute = "com_protocol.CocosRichesGetGameScreenReq";
+let receiveSubSpinRoute = "com_protocol.CocosRichesGetGameScreenRsp";
 
 let account = "";
 let agent = "";
@@ -24,9 +27,12 @@ let token = "";
 let deviceId = uuidv4();
 let root = null;
 let initPattern = null;
-let totalRound = 9999;
+let totalRound = 0;
 let userBalance = 0;
 let maxCount = 10000;
+let isFree = false;
+let type = "";
+let pType = "";
 
 exports.loadPattern = async (req, res) => {
     root = await loadProto(PROTO_PATH);
@@ -50,6 +56,8 @@ exports.loadPattern = async (req, res) => {
     if (!big) {
         big = 0;
     }
+    let small = 1;
+    let win = 0;
 
     let ws = new WebSocket(`wss://fgahfdvi.cg7.co/gogamesac/?account=${account}&agent=${agent}&time=${time}&token=${token}&gameId=${gameId}`, 
         'Chat-1.0',
@@ -106,15 +114,68 @@ exports.loadPattern = async (req, res) => {
                         } else{
                             userBalance -= minChip;
                         }
-                        await saveSpin(Model, pattern, big, gameCode, minChip, userBalance);
-                        big++;
-                        await delay(200);
-                        //totalRound--;
-
-                        if (big <= maxCount) {
-                            await sendSpinCocosRichesStartReq(ws, root, sendSpinCmd, sendSpinRoute, minChip, totalRound);
-                            break;
+                        
+                        const gameDone = pattern.gameDataInfo.curSpinNum == pattern.gameDataInfo.totalSpinNum && pattern.gameDataInfo.spin.curRoundNum == pattern.gameDataInfo.spin.totalRoundNum ? 1 : 0;
+                        small = 1;
+                        win = pattern.gameDataInfo.finishGold ? pattern.gameDataInfo.finishGold.toFixed(2) : 0;
+                        if (pattern.gameDataInfo.addFreeCount) {
+                            isFree = true;
+                            pType = "free";
+                            type = "free";
+                        } else {
+                            isFree = false;
+                            pType = pattern.gameDataInfo.finishGold ? 'base-win' : 'base-zero';
+                            type = "spin";
                         }
+                        await saveSpin1(Model, pattern, gameDone, big, small, gameCode, minChip, userBalance, win, pType, type);
+                        
+                        if (big <= maxCount || true) {
+                            if (gameDone == 1) {
+                                await sendSpinCocosRichesStartReq(ws, root, sendSpinCmd, sendSpinRoute, minChip, totalRound);
+                                big++;
+                            } else {
+                                if (pattern.gameDataInfo.spin.curRoundNum == pattern.gameDataInfo.spin.totalRoundNum) {
+                                    await sendSpinCocosRichesGetGameScreenReq(ws, root, sendSubSpinCmd, sendSubSpinRoute, pattern.gameDataInfo.curSpinNum + 1, 1);
+                                } else {
+                                    await sendSpinCocosRichesGetGameScreenReq(ws, root, sendSubSpinCmd, sendSubSpinRoute, pattern.gameDataInfo.curSpinNum, pattern.gameDataInfo.spin.curRoundNum + 1);
+                                }
+                            }
+                        }
+                        break;
+                    }
+                    case receiveSubSpinRoute: {
+                        let pattern = JSON.parse(JSON.stringify(response));
+                        if (!pattern.gameDataInfo){
+                            return;
+                        }
+                        small++;
+                        if (pattern.gameDataInfo.playerGold){
+                            userBalance = pattern.gameDataInfo.playerGold;
+                        } else{
+                            userBalance -= minChip;
+                        }
+                        win = pattern.gameDataInfo.finishGold ? pattern.gameDataInfo.finishGold.toFixed(2) - win : 0;
+                        const gameDone = pattern.gameDataInfo.curSpinNum == pattern.gameDataInfo.totalSpinNum && pattern.gameDataInfo.spin.curRoundNum == pattern.gameDataInfo.spin.totalRoundNum ? 1 : 0;
+                        if (isFree) {
+                            pType = "free";
+                            type = "free";
+                        } else {
+                            pType = pattern.gameDataInfo.finishGold ? 'base-win' : 'base-zero';
+                            type = "spin";
+                        }
+                        await saveSpin1(Model, pattern, gameDone, big, small, gameCode, minChip, userBalance, win, pType, type);
+                        win = pattern.gameDataInfo.finishGold ? pattern.gameDataInfo.finishGold.toFixed(2) : 0;
+                        if (gameDone) {
+                            await sendSpinCocosRichesStartReq(ws, root, sendSpinCmd, sendSpinRoute, minChip, totalRound);
+                            big++;
+                        } else {
+                            if (pattern.gameDataInfo.spin.curRoundNum == pattern.gameDataInfo.spin.totalRoundNum) {
+                                await sendSpinCocosRichesGetGameScreenReq(ws, root, sendSubSpinCmd, sendSubSpinRoute, pattern.gameDataInfo.curSpinNum + 1, 1);
+                            } else {
+                                await sendSpinCocosRichesGetGameScreenReq(ws, root, sendSubSpinCmd, sendSubSpinRoute, pattern.gameDataInfo.curSpinNum, pattern.gameDataInfo.spin.curRoundNum + 1);
+                            }
+                        }
+                        break;
                     }
                 }
             }
@@ -134,6 +195,4 @@ exports.loadPattern = async (req, res) => {
         stopPing();
     });
 }
-
-
 

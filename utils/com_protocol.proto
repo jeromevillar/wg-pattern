@@ -1564,7 +1564,13 @@ message SubtitleBroadcastNotIfyInfo {
 	double allOld = 3;
 	string recordId = 4;
 	CocosRichesSpin spin = 5;
-
+	repeated double winMultipleArr = 6;
+	uint32 freeSubtitleLevel = 7;
+	uint32 totalSpinNum = 8;
+	uint32 curSpinNum = 9;
+	double lastFinishGold = 10;
+	double clientBetValue = 11;
+	double allFinishGold = 12;
   }
 
   message CocosRichesSpin {
@@ -1609,6 +1615,16 @@ message SubtitleBroadcastNotIfyInfo {
 	uint32 betRateIdx = 2;
 	uint32 totalRound = 3;
 	double clientBetValue = 4;
+  }
+
+  message CocosRichesStartRsp {
+	int32 result = 1;
+	CocosRichesGameOpenInfo gameDataInfo = 2;
+  }
+
+  message CocosRichesGetGameScreenReq {
+	uint32 curSpinNum = 1;
+	uint32 curRoundNum = 2;
   }
 
   message CocosRichesGetGameScreenRsp {

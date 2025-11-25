@@ -421,6 +421,15 @@ exports.sendSpinSuperAceGetGameScreenReq = async (ws, root, cmd, route, curSpin,
     await this.sendMessage(ws, { cmd: cmd, route: route }, reqData, root);
 }
 
+exports.sendSpinCocosRichesGetGameScreenReq = async (ws, root, cmd, route, curSpin, curRound)  => {
+    let reqData = {
+        "curSpinNum": curSpin,
+        "curRoundNum": curRound
+    };
+    await this.sendMessage(ws, { cmd: cmd, route: route }, reqData, root);
+}
+
+
 exports.sendSpinCocosRichesStartReq = async (ws, root, cmd, route, betAmount, totalRound)  => {
     let reqData = {
         "betRateIdx": 0,

@@ -124,7 +124,7 @@ exports.loadPattern = async (req, res) => {
                             type = "free";
                         } else {
                             isFree = false;
-                            pType = pattern.gameDataInfo.finishGold ? 'base-win' : 'base-zero'
+                            pType = pattern.gameDataInfo.finishGold ? 'base-win' : 'base-zero';
                             type = "spin";
                         }
                         await saveSpin1(Model, pattern, gameDone, big, small, gameCode, minChip, userBalance, win, pType, type);
