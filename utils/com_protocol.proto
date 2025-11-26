@@ -609,6 +609,16 @@ message WildBountyShowdownStartRsp {
 	WildBountyShowdownGameOpenInfo gameDataInfo = 2;
 }
 
+message WildBountyShowdownGetGameScreenReq {
+	uint32 curSpinNum = 1;
+	uint32 curRoundNum = 2;
+}
+
+message WildBountyShowdownGetGameScreenRsp {
+	uint32 result = 1;
+	WildBountyShowdownGameOpenInfo gameDataInfo = 2;
+}
+
 message WildBountyShowdownGameOpenInfo {
 	double playerGold = 1;
 	double finishGold = 2;

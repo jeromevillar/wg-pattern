@@ -5,7 +5,7 @@ const path = require("path");
 const { v4: uuidv4 } = require('uuid');
 const {getLaunchUrl} = require("../utils/launchGame");
 const {loadProto} = require("../utils/proto");
-const {delay, startPing, stopPing, sendMessage, receiveMessage, sendClientLoginReq, sendDivisionActivityReq, sendSpinWildBountyShowdownStartReq, saveSpin} = require("../utils/common");
+const {delay, startPing, stopPing, sendMessage, receiveMessage, sendClientLoginReq, sendDivisionActivityReq, sendSpinWildBountyShowdownStartReq, saveSpin1, sendWildBountyShowdownGetGameScreenReq} = require("../utils/common");
 
 const PROTO_PATH = path.join(__dirname, "../utils/com_protocol.proto");
 
@@ -14,8 +14,11 @@ const gameCode = "wildbountyshowdown";
 const minChip = 0.2;
 
 let sendSpinCmd = 12011;
+let sendSubSpinCmd = 12014;
 let sendSpinRoute = "com_protocol.WildBountyShowdownStartReq";
 let receiveSpinRoute = "com_protocol.WildBountyShowdownStartRsp";
+let sendSubSpinRoute = "com_protocol.WildBountyShowdownGetGameScreenReq";
+let receiveSubSpinRoute = "com_protocol.WildBountyShowdownGetGameScreenRsp";
 
 let account = "";
 let agent = "";
@@ -106,15 +109,71 @@ exports.loadPattern = async (req, res) => {
                         } else{
                             userBalance -= minChip;
                         }
-                        await saveSpin(Model, pattern, big, gameCode, minChip, userBalance);
-                        big++;
-                        await delay(200);
-                        //totalRound--;
-
-                        if (big <= maxCount) {
-                            await sendSpinWildBountyShowdownStartReq(ws, root, sendSpinCmd, sendSpinRoute, minChip, totalRound);
-                            break;
+                        
+                        const gameDone = pattern.gameDataInfo.curSpinNum == pattern.gameDataInfo.totalSpinNum && pattern.gameDataInfo.spin.curRoundNum == pattern.gameDataInfo.spin.totalRoundNum ? 1 : 0;
+                        small = 1;
+                        win = pattern.gameDataInfo.finishGold ? pattern.gameDataInfo.finishGold.toFixed(2) : 0;
+                        if (pattern.gameDataInfo.totalSpinNum > 1) {
+                            isFree = true;
+                            pType = "free";
+                            type = "free";
+                        } else {
+                            isFree = false;
+                            pType = pattern.gameDataInfo.finishGold ? 'base-win' : 'base-zero';
+                            type = "spin";
                         }
+                        if (isFree) {
+                            await saveSpin1(Model, pattern, gameDone, big, small, gameCode, minChip, userBalance, win, pType, type);
+                        }
+                        if (big <= maxCount || true) {
+                            if (gameDone == 1) {
+                                await sendSpinWildBountyShowdownStartReq(ws, root, sendSpinCmd, sendSpinRoute, minChip, totalRound);
+                                big++;
+                            } else {
+                                if (pattern.gameDataInfo.spin.curRoundNum == pattern.gameDataInfo.spin.totalRoundNum) {
+                                    await sendWildBountyShowdownGetGameScreenReq(ws, root, sendSubSpinCmd, sendSubSpinRoute, pattern.gameDataInfo.curSpinNum + 1, 1);
+                                } else {
+                                    await sendWildBountyShowdownGetGameScreenReq(ws, root, sendSubSpinCmd, sendSubSpinRoute, pattern.gameDataInfo.curSpinNum, pattern.gameDataInfo.spin.curRoundNum + 1);
+                                }
+                            }
+                        }
+                        break;
+                    }
+                    case receiveSubSpinRoute: {
+                        let pattern = JSON.parse(JSON.stringify(response));
+                        if (!pattern.gameDataInfo){
+                            return;
+                        }
+                        small++;
+                        if (pattern.gameDataInfo.playerGold){
+                            userBalance = pattern.gameDataInfo.playerGold;
+                        } else{
+                            userBalance -= minChip;
+                        }
+                        win = pattern.gameDataInfo.finishGold ? pattern.gameDataInfo.finishGold.toFixed(2) - win : 0;
+                        const gameDone = pattern.gameDataInfo.curSpinNum == pattern.gameDataInfo.totalSpinNum && pattern.gameDataInfo.spin.curRoundNum == pattern.gameDataInfo.spin.totalRoundNum ? 1 : 0;
+                        if (isFree) {
+                            pType = "free";
+                            type = "free";
+                        } else {
+                            pType = pattern.gameDataInfo.finishGold ? 'base-win' : 'base-zero';
+                            type = "spin";
+                        }
+                        if (isFree) {
+                            await saveSpin1(Model, pattern, gameDone, big, small, gameCode, minChip, userBalance, win, pType, type);
+                        }
+                        win = pattern.gameDataInfo.finishGold ? pattern.gameDataInfo.finishGold.toFixed(2) : 0;
+                        if (gameDone) {
+                            await sendSpinWildBountyShowdownStartReq(ws, root, sendSpinCmd, sendSpinRoute, minChip, totalRound);
+                            big++;
+                        } else {
+                            if (pattern.gameDataInfo.spin.curRoundNum == pattern.gameDataInfo.spin.totalRoundNum) {
+                                await sendWildBountyShowdownGetGameScreenReq(ws, root, sendSubSpinCmd, sendSubSpinRoute, pattern.gameDataInfo.curSpinNum + 1, 1);
+                            } else {
+                                await sendWildBountyShowdownGetGameScreenReq(ws, root, sendSubSpinCmd, sendSubSpinRoute, pattern.gameDataInfo.curSpinNum, pattern.gameDataInfo.spin.curRoundNum + 1);
+                            }
+                        }
+                        break;
                     }
                 }
             }

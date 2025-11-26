@@ -483,6 +483,15 @@ exports.sendSpinWildBountyShowdownStartReq = async (ws, root, cmd, route, betAmo
     await this.sendMessage(ws, { cmd: cmd, route: route }, reqData, root);
 }
 
+exports.sendWildBountyShowdownGetGameScreenReq = async (ws, root, cmd, route, curSpin, curRound)  => {
+    let reqData = {
+        "curSpinNum": curSpin,
+        "curRoundNum": curRound
+    };
+    await this.sendMessage(ws, { cmd: cmd, route: route }, reqData, root);
+}
+
+
 exports.saveSpin = async (Model, data, big, gameCode, betAmount, userBalance) => {
     await Model.create({
         gameCode: gameCode,
