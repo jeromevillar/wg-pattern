@@ -1646,6 +1646,15 @@ message SubtitleBroadcastNotIfyInfo {
 	FortuneSnakeGameOpenInfo gameDataInfo = 2;
   }
 
+  message FortuneSnakeGetGameScreenReq {
+	uint32 curRoundNum = 1;
+  }
+
+  message FortuneSnakeGetGameScreenRsp {
+	int32 result = 1;
+	FortuneSnakeGameOpenInfo gameDataInfo = 2;
+  }
+
   message FortuneSnakeGameOpenInfo {
 	double playerGold = 1;
 	double finishGold = 2;

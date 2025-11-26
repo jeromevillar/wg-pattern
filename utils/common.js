@@ -451,6 +451,13 @@ exports.sendSpinFortuneSnakeStartReq = async (ws, root, cmd, route, betAmount, t
     await this.sendMessage(ws, { cmd: cmd, route: route }, reqData, root);
 }
 
+exports.sendSpinFortuneSnakeGetGameScreenReq = async (ws, root, cmd, route, curRoundNum)  => {
+    let reqData = {
+        "curRoundNum": curRoundNum
+    };
+    await this.sendMessage(ws, { cmd: cmd, route: route }, reqData, root);
+}
+
 exports.sendSpinSuperFruitSlot2StartReq = async (ws, root, cmd, route, betAmount, totalRound)  => {
     let reqData = {
         "betRateIdx": 0,
