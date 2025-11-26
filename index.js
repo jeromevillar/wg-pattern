@@ -66,7 +66,11 @@ require("./routes/queenofbounty.routes")(app);
 require("./routes/wildbountyshowdown.routes")(app);
 
 // set port, listen for requests
+<<<<<<< HEAD
 const PORT = process.env.PORT || 9004;
+=======
+const PORT = process.env.PORT || 9003;
+>>>>>>> 9e44317d240c44b6fcc16aed4e0c0ed532087a7f
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);
 });

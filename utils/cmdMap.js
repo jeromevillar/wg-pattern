@@ -124,8 +124,13 @@ function getRouteForCmd(cmd) {
         // 12012: "com_protocol.SuperAceStartRsp",
         // 12011: "com_protocol.CocosRichesStartReq",
         // 12012: "com_protocol.CocosRichesStartRsp",
+<<<<<<< HEAD
         // 12011: "com_protocol.FortuneSnakeStartReq",
         // 12012: "com_protocol.FortuneSnakeStartRsp",
+=======
+        12011: "com_protocol.FortuneSnakeStartReq",
+        12012: "com_protocol.FortuneSnakeStartRsp",
+>>>>>>> 9e44317d240c44b6fcc16aed4e0c0ed532087a7f
         // 12011: "com_protocol.SuperFruitsSlot2StartReq",
         // 12012: "com_protocol.SuperFruitsSlot2StartRsp",
         // 12011: "com_protocol.QueenOfBountyStartReq",
@@ -137,8 +142,13 @@ function getRouteForCmd(cmd) {
         12020: "com_protocol.SuperAceGetGameScreenRsp",
         // 12013: "com_protocol.CocosRichesGetGameScreenReq",
         // 12014: "com_protocol.CocosRichesGetGameScreenRsp",
+<<<<<<< HEAD
         12014: "com_protocol.WildBountyShowdownGetGameScreenReq",
         12015: "com_protocol.WildBountyShowdownGetGameScreenRsp",
+=======
+        12013: "com_protocol.FortuneSnakeGetGameScreenReq",
+        12014: "com_protocol.FortuneSnakeGetGameScreenRsp",
+>>>>>>> 9e44317d240c44b6fcc16aed4e0c0ed532087a7f
 
         12017: "com_protocol.WaterMarginUpdateOptTimeReq",
         12041: "com_protocol.ClientNewUserTipsRsp",
